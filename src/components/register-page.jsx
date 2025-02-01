@@ -43,7 +43,7 @@ export default function Register() {
 
   return (
     <>
-      {/* <section className="w-screen h-screen bg-gray-900">
+      <section className="w-screen h-screen bg-gray-900">
         <Nav />
         <div className="flex flex-col items-center justify-center h-[80%]">
           <h1 className="text-white text-xl text-gray-500 mb-6">Register</h1>
@@ -84,7 +84,7 @@ export default function Register() {
           </form>
           <GoogleButton />
         </div>
-      </section> */}
+      </section>
     </>
   );
 }
