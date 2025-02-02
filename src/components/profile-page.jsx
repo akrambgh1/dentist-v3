@@ -15,7 +15,7 @@ export default function Profile() {
   const fetchUser = async () => {
     auth.onAuthStateChanged(async (user) => {
       if (user) {
-        console.log("User detected:", user); // Debugging
+        
         const docRef = doc(db, "users", user.uid);
         const docSnap = await getDoc(docRef);
         if (docSnap.exists()) {
@@ -42,8 +42,9 @@ export default function Profile() {
       setTimeout(() => {
         navigate("/login");
       }, 1000);
+      window.localStorage.removeItem("logged_in");
     } catch (error) {
-      console.error("Error signing out:", error);
+      
       toast.error(error.message, { position: "top-center" });
     }
   }
@@ -55,7 +56,7 @@ export default function Profile() {
         <div className="bg-[#181940] w-full h-[20vh] flex flex-col items-center justify-center">
           <img
             className="rounded-full h-24 w-24 object-cover"
-            src={userDetails?.photo || "/default-photo.png"}
+            src={userDetails?.photo || "./default-photo.png"}
             alt="user"
           />
         </div>
