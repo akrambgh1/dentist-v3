@@ -19,10 +19,10 @@ export default function Home() {
 
         <section className="w-full h-auto">
           <div className="h-auto w-full p-4 flex-col flex items-center justify-center gap-[1.5rem]">
-            <h1 className="text-[#181940] text-[1.75rem] font-bold">
+            <h1 className="text-[#181940] text-[1.75rem] font-bold text-center">
               Connecting Patients with Top Dentists Effortlessly !
             </h1>
-            <h2 className="text-[#7d7d7d]">
+            <h2 className="text-[#7d7d7d] text-center">
               Find the right dentist, book appointments, and explore
               professional profiles—all in one place.
             </h2>
@@ -53,7 +53,7 @@ export default function Home() {
 
           <div className="flex flex-col gap-[1rem] mt-[1rem]">
             <h1 className="text-[1.15rem] font-[500] p-4 text-[#181940]">
-              1- For Dentists
+              2- For Dentists
             </h1>
             <Card
               icon={Check }

@@ -113,7 +113,7 @@ export default function Profile() {
             </div>
 
             {/* Tabs Content */}
-            <div className="max-md:h-[60vh] w-full py-8 px-8 max-md:p-4">
+            <div className="max-md:h-auto w-full py-8 px-8 max-md:p-4">
               {activeTab === "tab1" && (
                 <div className="grid grid-cols-2 gap-8 h-auto max-md:flex max-md:flex-col">
                   <div className="flex flex-col gap-2">

@@ -1,5 +1,5 @@
 
-import { House, UserRound, Search, MessageCircle } from "lucide-react";
+import { House, UserRound, Search, MessageCircle, Calendar } from "lucide-react";
 
 import { Link } from "react-router-dom";
 export default function Nav() {
@@ -27,6 +27,11 @@ export default function Nav() {
         <div className="flex flex-col gap-[.25rem]  items-center justify-center">
           <Search stroke="#111238" size={21} />
           <h1 className="text-[#111238] font-[500]">Search</h1>
+        </div>
+
+        <div className="flex flex-col gap-[.25rem]  items-center justify-center">
+          <Calendar stroke="#111238" size={21} />
+          <h1 className="text-[#111238] font-[500]">Appt</h1>
         </div>
 
         <div className="flex flex-col gap-[.25rem]  items-center justify-center">
