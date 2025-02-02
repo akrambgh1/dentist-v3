@@ -145,7 +145,7 @@ export default function Profile() {
                     <input
                       disabled
                       className="bg-[#f7f7f7] rounded-[5px] text-[#1e1e1e] py-2 px-4 outline-none select-none max-md:text-[.85rem] font-[500]"
-                      value={userDetails?.Phone || "N/A"}
+                      value={userDetails?.phoneNumber || "N/A"}
                     />
                   </div>
 
