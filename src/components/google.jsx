@@ -26,7 +26,10 @@ const handleGRegister = async (e) => {
        
         }); {setTimeout(() => { 
         navigate("/Profile"); 
-  }, 1000);;toast.success("user registered successfully", { position: "top-center", });} 
+        }, 1000);
+        window.localStorage.setItem("logged_in" , true);
+        ; toast.success("user registered successfully", { position: "top-center", });
+      } 
     }) 
         
         

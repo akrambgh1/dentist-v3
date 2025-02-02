@@ -27,6 +27,8 @@ export default function Register() {
         });
       }
       toast.success("user registered successfully", { position: "top-center" });
+      window.localStorage.setItem("logged_in" , true);
+      toast.success("user registered successfully",{position:"top-center",});
       setTimeout(() => {
         navigate("/Profile");
       }, 1000);
@@ -80,7 +82,10 @@ export default function Register() {
             <GoogleButton />
           </form>
         </div>
-      </section>
+
+      </section> 
+
+    
     </>
   );
 }

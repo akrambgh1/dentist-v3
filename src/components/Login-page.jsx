@@ -22,6 +22,7 @@ export default function Login() {
       setTimeout(() => {
         navigate("/Profile");
       }, 1000);
+      window.localStorage.setItem("logged_in" , true);
     } catch (error) {
       console.error("Error signing in with email and password:", error);
       toast.error(error.message, { position: "top-center" });
