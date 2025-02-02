@@ -57,7 +57,7 @@ export default function Login() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button className="relative h-12 overflow-hidden rounded bg-[#181940] px-5 py-2.5 text-white transition-all duration-300 hover:bg-neutral-800 hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2">
+          <button className="relative h-12 overflow-hidden rounded bg-[#4749b9] px-5 py-2.5 text-white transition-all duration-300 hover:bg-neutral-800 hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2">
             <span className="relative">Log In</span>
           </button>
 

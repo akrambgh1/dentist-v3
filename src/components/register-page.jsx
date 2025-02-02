@@ -84,7 +84,11 @@ export default function Register() {
           </form>
           <GoogleButton />
         </div>
+<<<<<<< HEAD
       </section> 
+=======
+      </section>
+>>>>>>> bf012fd44fda438ff46b1faf8831cf4202322401
     </>
   );
 }
