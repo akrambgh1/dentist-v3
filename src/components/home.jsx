@@ -1,37 +1,14 @@
 import Nav from "./navbar";
 import { Link } from "react-router-dom";
 import Card from "./Card";
-import { useState } from "react";
 import { Hospital, Calendar, Check, NotebookPen } from "lucide-react";
-import { auth, db } from "./firebase";
-import { getDoc, doc } from "firebase/firestore";
-import { useEffect } from "react";
-import { toast } from "react-toastify";
+import { UserContext } from "../UserContext";
+import { useContext } from "react";
 
 export default function Home() {
   const loggedIn = window.localStorage.getItem("logged_in");
-  const [userDetails, setUserDetails] = useState(null);
-  const fetchUser = async () => {
-    auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        const docRef = doc(db, "users", user.uid);
-        const docSnap = await getDoc(docRef);
-        if (docSnap.exists()) {
-          setUserDetails(docSnap.data());
-        } else {
-          toast.error("User not logged in or document does not exist", {
-            position: "center",
-          });
-        }
-      } else {
-        console.log("No user detected"); // Debugging
-      }
-    });
-  };
+  const { userDetails } = useContext(UserContext);
 
-  useEffect(() => {
-    fetchUser();
-  }, []);
   return (
     <>
       <Nav />
