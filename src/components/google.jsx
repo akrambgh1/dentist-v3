@@ -21,11 +21,11 @@ const handleGRegister = async (e) => {
           Firstname: result._tokenResponse.firstName, 
           photo:result.user.photoURL, 
           phoneNumber: result.user.phoneNumber, 
-         
+          
    
        
         }); {setTimeout(() => { 
-        navigate("/Profile"); 
+        navigate("/"); 
         }, 1000);
         window.localStorage.setItem("logged_in" , true);
         ; toast.success("user registered successfully", { position: "top-center", });

@@ -19,7 +19,7 @@ export default function Login() {
       await signInWithEmailAndPassword(auth, email, password);
       toast.success("User logged in successfully", { position: "top-center" });
       setTimeout(() => {
-        navigate("/Profile");
+        navigate("/");
       }, 1000);
       window.localStorage.setItem("logged_in", true);
     } catch (error) {
