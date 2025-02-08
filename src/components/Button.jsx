@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import Login from "./Login-page";
 import Register from "./register-page";
 import { useState } from "react";
@@ -64,7 +65,7 @@ export default Button;
 
 export function Button2({text}) {
   return (
-    <button className="group w-fit relative cursor-pointer inline-flex h-[calc(48px+8px)] items-center justify-center rounded-full bg-[#181940] py-1 pl-6 pr-14 font-medium text-white hover:text-[#181940]">
+    <button className="group relative cursor-pointer inline-flex h-[calc(48px+8px)] items-center justify-center rounded-full bg-[#181940] py-1 pl-[2rem] pr-[4rem] font-medium text-white hover:text-[#181940]">
       <span className="z-10 pr-2">{text}</span>
       <div className="absolute right-1 inline-flex h-12 w-12 items-center justify-end rounded-full bg-[#ffffff] text-[#181940] transition-[width] group-hover:w-[calc(100%-8px)] ">
         <div className="mr-3.5 flex items-center justify-center">
