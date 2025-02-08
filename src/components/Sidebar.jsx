@@ -115,7 +115,7 @@ export default function Sidebar() {
            
             {isActive && isTextVisible ?(
              
-             <button className="relative cursor-pointer overflow-hidden rounded  bg-[#18194 px-[1.5rem] py-2 text-white transition-all duration-200 hover:bg-[#4749b9] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+             <button className="relative cursor-pointer overflow-hidden rounded  bg-[#181940] px-[1.5rem] py-2 text-white transition-all duration-200 hover:bg-[#4749b9] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
              >
                Login
              </button>
