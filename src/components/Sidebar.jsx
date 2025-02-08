@@ -120,7 +120,7 @@ export default function Sidebar() {
                Login
              </button>
               ) : (
-                <div className="w-[2.5rem] h-[2.5rem]  hover:text-white duration-400 flex justify-center items-center rounded-[50%] hover:bg-[#181940] transition"><LogIn /></div>)}
+                <div className="w-[2.5rem] h-[2.5rem] p-2 hover:text-white duration-400 flex justify-center items-center rounded-[50%] hover:bg-[#181940] transition"><LogIn /></div>)}
           { /* TODO: Add login button here when the user is not logged in */}
          </Link>
         </>) }
