@@ -67,7 +67,7 @@ export default function Login() {
 
       <Link to="/">
         <div className="absolute bottom-[3rem] left-[3rem] text-white bg-[#181940] rounded-full p-4 max-md:hidden">
-          <HomeIcon size={32} className="text-white" />
+          <HomeIcon size={24} className="text-white" />
         </div>
       </Link>
     </section>

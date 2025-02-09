@@ -141,10 +141,10 @@ export default function Profile() {
                               value={userDetails?.email || "N/A"}
                             />
                           </div>
-                          <div className="w-full p-8 max-md:pt-4 max-md:p-0 max-md:border-t-1 max-md:border-[#eee]">
+                          <div className="w-full max-md:pt-4 max-md:p-0 max-md:border-t-1 max-md:border-[#eee]">
                             <button
                               onClick={handLogout}
-                              className="relative cursor-pointer overflow-hidden rounded bg-[#4749b9] px-[2rem] py-2.5 text-white transition-all duration-200 hover:bg-red-500 hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+                              className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-red-500 hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
                             >
                               Logout
                             </button>

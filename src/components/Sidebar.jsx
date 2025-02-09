@@ -96,9 +96,10 @@ export default function Sidebar() {
         {/* User Info at the Bottom */}
         {/* replace the name and the email by the user full name and email */}
         {loggedIn ? (<>
+        <div className="flex flex-col gap-[2rem]">
           <div className="flex w-full left-0 gap-[.5rem] items-center justify-between">
-          <div className="w-[2.5rem] h-[2.5rem] border-2 border-[#181940]  rounded-[50%] bg-[#181940]"><img className="rounded-[50%]" src={userDetails?.photo || "./default-photo.png"} alt="" /></div>
-          <div>
+            <div className="w-[2.5rem] h-[2.5rem] border-2 border-[#181940]  rounded-[50%] bg-[#181940]"><img className="rounded-[50%]" src={userDetails?.photo || "./default-photo.png"} alt="" /></div>
+            <div>
             {isActive && isTextVisible && (
               <h1 className="transition-opacity duration-400 text-[#88898b] cursor-pointer text-[.85rem]">
                 {userDetails?.Firstname }
@@ -109,6 +110,19 @@ export default function Sidebar() {
                 {userDetails?.email }
               </h2>
             )}
+        </div>
+          
+        </div><div>
+
+          {isActive && isTextVisible && (
+              <button
+              
+              className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-red-500 hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+            >
+              Logout
+            </button>
+            )}
+
           </div>
         </div>
         </>) : (<>
