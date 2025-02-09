@@ -29,7 +29,7 @@ export default function Login() {
   };
 
   return (
-    <section className="w-screen h-[100dvh] relative flex flex-col items-center justify-center relative">
+    <section className="w-screen h-[100dvh] flex flex-col items-center justify-center relative">
       <Nav></Nav>
       <form
         onSubmit={handleLogin}

@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
 import Nav from "./navbar";
 import { createUserWithEmailAndPassword } from "firebase/auth";
@@ -160,7 +161,7 @@ export default function Register() {
                 />
                 <input
                   type="text"
-                  placeholder="Enter your address office"
+                  placeholder="Enter your office address"
                   className="w-full bg-[#eee] px-4 py-2 rounded-[5px] outline-none"
                   value={andress}
                   onChange={(e) =>setAndress(e.target.value)} 

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useState } from "react";
+import { useState,useContext} from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   House,
@@ -7,15 +7,20 @@ import {
   MessagesSquare,
   Calendar,
   UserRound,
-  ArrowRight
+  ArrowRight,
+  ArrowLeft,
+  LogIn
 } from "lucide-react";
+
+import { UserContext } from "../UserContext";
 // import FileDropArea from "./Filedrop";
 
 export default function Sidebar() {
   const [isActive, setIsActive] = useState(false);
   const [isTextVisible, setIsTextVisible] = useState(false);
+  const loggedIn = window.localStorage.getItem("logged_in");
   const location = useLocation(); // Get the current URL
-
+  const { userDetails } = useContext(UserContext);
   const toggleActive = () => {
     setIsActive((prev) => {
       if (!prev) {
@@ -35,7 +40,7 @@ export default function Sidebar() {
     { name: "Search", path: "/Search", icon: Search },
     { name: "Messages", path: "/g", icon: MessagesSquare },
     { name: "Appointments", path: "/f", icon: Calendar },
-    { name: "Profile", path: "/profile", icon: UserRound }
+    { name: "Profile", path:  loggedIn ? "/profile" : "/login", icon: UserRound }
   ];
 
   return (
@@ -50,7 +55,8 @@ export default function Sidebar() {
         className="p-[.25rem] rounded-[50%] flex items-center justify-center bg-[#e4e4e4] text-[#181940] cursor-pointer absolute top-[20px] right-[-20px]"
         onClick={toggleActive}
       >
-        <ArrowRight />
+        {isActive ? <ArrowLeft /> : <ArrowRight />}
+        
       </div>
 
       {/* Sidebar Menu */}
@@ -86,24 +92,40 @@ export default function Sidebar() {
           })}
         </ul>
       </div>
-      <div className="flex flex-col absolute bottom-[2rem] gap-[3rem] items-start justify-center">
+      <div className="flex flex-col absolute bottom-[2rem] gap-[3rem] items-start justify-start">
         {/* User Info at the Bottom */}
         {/* replace the name and the email by the user full name and email */}
-        <div className="flex w-full left-0 gap-[.5rem] items-center justify-between">
-          <div className="w-[2.5rem] h-[2.5rem] rounded-[50%] bg-[#181940]"></div>
+        {loggedIn ? (<>
+          <div className="flex w-full left-0 gap-[.5rem] items-center justify-between">
+          <div className="w-[2.5rem] h-[2.5rem] border-2 border-[#181940]  rounded-[50%] bg-[#181940]"><img className="rounded-[50%]" src={userDetails?.photo || "./default-photo.png"} alt="" /></div>
           <div>
             {isActive && isTextVisible && (
               <h1 className="transition-opacity duration-400 text-[#88898b] cursor-pointer text-[.85rem]">
-                John Doe
+                {userDetails?.Firstname }
               </h1>
             )}
             {isActive && isTextVisible && (
               <h2 className="transition-opacity duration-400 text-[#88898b] cursor-pointer text-[.85rem]">
-                johndoe@gmail.com
+                {userDetails?.email }
               </h2>
             )}
           </div>
         </div>
+        </>) : (<>
+            <Link to="/login">
+           
+            {isActive && isTextVisible ?(
+             
+             <button className="relative cursor-pointer overflow-hidden rounded  bg-[#181940] px-[1.5rem] py-2 text-white transition-all duration-200 hover:bg-[#4749b9] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+             >
+               Login
+             </button>
+              ) : (
+                <div className="w-[2.5rem] h-[2.5rem] p-2 hover:text-white duration-400 flex justify-center items-center rounded-[50%] hover:bg-[#181940] transition"><LogIn /></div>)}
+          { /* TODO: Add login button here when the user is not logged in */}
+         </Link>
+        </>) }
+        
       </div>
     </section>
   );
