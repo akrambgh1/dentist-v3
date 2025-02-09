@@ -7,6 +7,7 @@ import { auth } from "./firebase";
 import { toast } from "react-toastify";
 import GoogleButton from "./google";
 import { Link } from "react-router-dom";
+import { HomeIcon } from "lucide-react";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -28,11 +29,12 @@ export default function Login() {
   };
 
   return (
-    <section className="w-screen h-[100dvh] relative flex flex-col items-center justify-center">
+    <section className="w-screen h-[100dvh] relative flex flex-col items-center justify-center relative">
       <Nav></Nav>
       <form
         onSubmit={handleLogin}
-        className="w-[80%] h-full flex flex-col justify-center gap-[2rem] p-4 max-[450px]:w-full md:w-[70%] lg:w-[60%] lg:p-8 xl:w-[30%]">
+        className="w-[80%] h-full flex flex-col justify-center gap-[2rem] p-4 max-[450px]:w-full md:w-[70%] lg:w-[60%] lg:p-8 xl:w-[30%]"
+      >
         <h1 className="font-bold text-[2rem] text-[#181940]">
           Hey, welcom back!
         </h1>
@@ -62,6 +64,12 @@ export default function Login() {
 
         <GoogleButton />
       </form>
+
+      <Link to="/">
+        <div className="absolute bottom-[3rem] left-[3rem] text-white bg-[#181940] rounded-full p-4 max-md:hidden">
+          <HomeIcon size={32} className="text-white" />
+        </div>
+      </Link>
     </section>
   );
 }

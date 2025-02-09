@@ -32,7 +32,7 @@ export default function Profile() {
       <section className="flex">
         <Sidebar></Sidebar>
         <section className="h-[100vh] flex-1 overflow-auto">
-        {userDetails ? (
+          {userDetails ? (
             <>
               <section className="w-auto h-auto bg-[#181940] relative flex flex-col items-center justify-center mb-[5rem]">
                 <div className="bg-[#181940] w-full h-[20vh] flex flex-col items-center justify-center">
@@ -169,9 +169,9 @@ export default function Profile() {
               </section>
             </>
           ) : (
-            <setion className="w-screen h-[100dvh] flex items-center justify-center">
+            <section className="w-full h-[100dvh] flex items-center justify-center">
               <BarLoader color="#134cbc" height={4} width={150} />
-            </setion>
+            </section>
           )}
         </section>
       </section>

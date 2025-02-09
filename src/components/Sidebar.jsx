@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -31,9 +32,9 @@ export default function Sidebar() {
   // Menu items with their respective paths
   const menuItems = [
     { name: "Home", path: "/", icon: House },
-    { name: "Search", path: "", icon: Search },
-    { name: "Messages", path: "", icon: MessagesSquare },
-    { name: "Appointments", path: "", icon: Calendar },
+    { name: "Search", path: "/Search", icon: Search },
+    { name: "Messages", path: "/g", icon: MessagesSquare },
+    { name: "Appointments", path: "/f", icon: Calendar },
     { name: "Profile", path: "/profile", icon: UserRound }
   ];
 
@@ -59,7 +60,7 @@ export default function Sidebar() {
             const isActivePage = location.pathname === path;
 
             return (
-              <Link key={path} to={path}>
+              <Link key={path || `menu-item-${index}`} to={path || "#"}>
                 <li
                   className={`flex gap-[1.5rem] items-center p-2 cursor-pointer hover:text-[#181940] transition-colors w-full duration-200
                   ${
