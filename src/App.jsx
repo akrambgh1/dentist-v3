@@ -6,6 +6,8 @@ import Profile from "./components/profile-page";
 import { ToastContainer } from "react-toastify";
 import Home from "./components/home";
 import SearchPage from "./components/SearchPage";
+import RegisterForm from "./components/Regestration";
+
 function App() {
   return (
     <>
@@ -16,6 +18,7 @@ function App() {
           <Route path="/Search" element={<SearchPage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/Profile" element={<Profile />} />
+          <Route path="/RegisterForm" element={<RegisterForm />} />
         </Routes>
         <ToastContainer />
       </Router>

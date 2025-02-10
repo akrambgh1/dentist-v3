@@ -1,6 +1,8 @@
 /* eslint-disable no-undef */
 import { useState,useContext} from "react";
 import { Link, useLocation } from "react-router-dom";
+import { toast } from "react-toastify";
+import { auth } from "./firebase";
 import {
   House,
   Search,
@@ -33,6 +35,19 @@ export default function Sidebar() {
       return !prev;
     });
   };
+
+    async function handLogout() {
+      try {
+        await auth.signOut();
+        toast.success("User logged out successfully", { position: "top-center" });
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
+        window.localStorage.removeItem("logged_in");
+      } catch (error) {
+        toast.error(error.message, { position: "top-center" });
+      }
+    }
 
   // Menu items with their respective paths
   const menuItems = [
@@ -116,7 +131,7 @@ export default function Sidebar() {
 
           {isActive && isTextVisible && (
               <button
-              
+              onClick={handLogout}
               className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-red-500 hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
             >
               Logout
