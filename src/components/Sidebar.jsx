@@ -53,7 +53,7 @@ export default function Sidebar() {
   const menuItems = [
     { name: "Home", path: "/", icon: House },
     { name: "Search", path: "/Search", icon: Search },
-    { name: "Messages", path: "/g", icon: MessagesSquare },
+    { name: "Messages", path: "/Chat", icon: MessagesSquare },
     { name: "Appointments", path: "/f", icon: Calendar },
     { name: "Profile", path:  loggedIn ? "/profile" : "/login", icon: UserRound }
   ];

@@ -7,6 +7,7 @@ import { ToastContainer } from "react-toastify";
 import Home from "./components/home";
 import SearchPage from "./components/SearchPage";
 import RegisterForm from "./components/Regestration";
+import Chat from "./components/Chat";
 
 function App() {
   return (
@@ -19,6 +20,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/Profile" element={<Profile />} />
           <Route path="/RegisterForm" element={<RegisterForm />} />
+          <Route path="/Chat" element={<Chat />} />
+          <Route path="/chat/:chatId" element={<Chat />} />
         </Routes>
         <ToastContainer />
       </Router>
