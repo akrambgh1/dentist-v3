@@ -1,10 +1,11 @@
-/* eslint-disable no-unused-vars */
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect } from "react";
 import { db } from "../../firebase";
 import { onSnapshot, doc,getDoc } from "firebase/firestore";
 import { useState } from "react";
 import { useContext } from "react";
 import { UserContext } from "../../../UserContext";
+
 const chatList = () => {
   const [chats, setChats] = useState([]);
   const { userDetails } = useContext(UserContext);
@@ -32,13 +33,13 @@ const chatList = () => {
   }, [userDetails?.id]);
 
   return (
-    <div className="w-[85%] w-full gap-5 flex flex-col overflow-y-scroll">
+    <div className="w-full gap-5 flex flex-col items-center justify-center">
       {chats?.map((chat) =>(<>
-      <div key={chat.chatId} className=" rounded-2xl flex border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem]  gap-[1rem] w-full">
+      <div key={chat.chatId} className=" rounded-2xl flex border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem]  gap-[1rem]">
         <img className="rounded-[50%] w-12" src={chat.user.photo || "profilepi.jpg"} alt="" />
         <div className="rounded-[]  items-center w-full">
             <h1>{chat.user.Firstname }</h1>
-            <h1>{ chat.lastMessage}</h1>
+            <h1>{chat.lastMessage}</h1>
         </div>
       </div></>
       ))}

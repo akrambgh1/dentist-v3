@@ -8,7 +8,7 @@ import { ToastContainer } from "react-toastify";
 import Home from "./pages/home";
 import SearchPage from "./pages/SearchPage";
 import RegisterForm from "./pages/Regestration";
-import Inbox from "./pages/inbox-phage";
+import Inbox from "./pages/inbox-page";
 
 function App() {
   return (

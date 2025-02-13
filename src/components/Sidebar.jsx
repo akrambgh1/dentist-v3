@@ -131,7 +131,7 @@ export default function Sidebar() {
         </div>
           
         </div><div>
-  
+
           {isActive && isTextVisible && (
               <button
               onClick={handLogout}

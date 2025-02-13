@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useState, useEffect } from "react";
 import { auth,db} from "components/firebase";
 import { doc, getDoc } from "firebase/firestore";

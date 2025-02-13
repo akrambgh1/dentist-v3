@@ -4,5 +4,9 @@ body {
   font-family: "Mona Sans", sans-serif;
 }
 
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}
+
 
 @import "tailwindcss";
