@@ -1,4 +1,4 @@
-import Sidebar from "./Sidebar"
+import Sidebar from "../components/Sidebar"
 import { Search } from "lucide-react"
 
 export default function SearchPage() {

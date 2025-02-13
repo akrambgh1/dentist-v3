@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { auth } from "./firebase";
+import { auth } from "../components/firebase";
 import { UserContext } from "../UserContext";
 import { BarLoader } from "react-spinners";
-import Sidebar from "./Sidebar";
-import Nav from "./navbar";
+import Sidebar from "../components/Sidebar";
+import Nav from "../components/navbar";
 
 export default function Profile() {
   const { userDetails } = useContext(UserContext);
@@ -38,7 +38,7 @@ export default function Profile() {
                 <div className="bg-[#181940] w-full h-[20vh] flex flex-col items-center justify-center">
                   <img
                     className="rounded-full h-24 w-24 object-cover"
-                    src={userDetails?.photo || "./default-photo.png"}
+                    src={userDetails?.photo || "profilepi.jpg"}
                     alt="user"
                   />
                 </div>

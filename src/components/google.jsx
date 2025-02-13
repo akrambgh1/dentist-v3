@@ -19,12 +19,21 @@ const handleGRegister = async (e) => {
           email: result.user.email, 
           Lastname: result._tokenResponse.lastName, 
           Firstname: result._tokenResponse.firstName, 
+          lowercasedName: result._tokenResponse.firstName.toLowerCase(),
           photo:result.user.photoURL, 
           phoneNumber: result.user.phoneNumber, 
+          blocked: [],
+          id: result.user.uid,
           
    
        
-        }); {setTimeout(() => { 
+        });
+        setDoc(doc(db, "userChat", result.user.uid), { 
+          chats: [] 
+        }); 
+          
+      {
+        setTimeout(() => { 
         navigate("/"); 
         }, 1000);
         window.localStorage.setItem("logged_in" , true);

@@ -1,13 +1,13 @@
 /* eslint-disable no-unused-vars */
-import Nav from "./navbar";
+import Nav from "../components/navbar";
 import { Link } from "react-router-dom";
-import Card from "./Card";
+import Card from "../components/Card";
 import { Hospital, Calendar, Check, NotebookPen } from "lucide-react";
 import { UserContext } from "../UserContext";
 import { useContext } from "react";
-import Sidebar from "./Sidebar";
-import { Button2 } from "./Button";
-import Footer from "./Footer";
+import Sidebar from "../components/Sidebar";
+import { Button2 } from "../components/Button";
+import Footer from "../components/Footer";
 
 export default function Home() {
   const loggedIn = window.localStorage.getItem("logged_in");
@@ -30,9 +30,12 @@ export default function Home() {
                   Find the right dentist, book appointments, and explore
                   professional profiles—all in one place.
                 </h2>
-                <Link to="/Register">
-                <Button2 text={"Sign up"}/>
-                </Link>
+                {loggedIn ? (<>
+                
+                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{userDetails?.Firstname}</span></h1>
+                  </>) : (<Link to="/Register">
+                    <Button2 text={"Sign up"} />
+                  </Link>)}
               </div>
 
               <div className="flex flex-col gap-[2rem]">

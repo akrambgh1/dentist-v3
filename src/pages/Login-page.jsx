@@ -1,11 +1,11 @@
 /* eslint-disable no-unused-vars */
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import Nav from "./navbar";
+import Nav from "../components/navbar";
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth } from "../components/firebase";
 import { toast } from "react-toastify";
-import GoogleButton from "./google";
+import GoogleButton from "../components/google";
 import { Link } from "react-router-dom";
 import { HomeIcon } from "lucide-react";
 
@@ -33,8 +33,7 @@ export default function Login() {
       <Nav></Nav>
       <form
         onSubmit={handleLogin}
-        className="w-[80%] h-full flex flex-col justify-center gap-[2rem] p-4 max-[450px]:w-full md:w-[70%] lg:w-[60%] lg:p-8 xl:w-[30%]"
-      >
+        className="w-[80%] h-full flex flex-col justify-center gap-[2rem] p-4 max-[450px]:w-full md:w-[70%] lg:w-[60%] lg:p-8 xl:w-[30%]">
         <h1 className="font-bold text-[2rem] text-[#181940]">
           Hey, welcom back!
         </h1>

@@ -1,6 +1,6 @@
 /* eslint-disable react/prop-types */
-import Login from "./Login-page";
-import Register from "./register-page";
+import Login from  "../pages/Login-page";
+import Register from "../pages/register-page";
 import { useState } from "react";
 
 const Button = () => {

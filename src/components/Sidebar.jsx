@@ -53,7 +53,7 @@ export default function Sidebar() {
   const menuItems = [
     { name: "Home", path: "/", icon: House },
     { name: "Search", path: "/Search", icon: Search },
-    { name: "Messages", path: "/Chat", icon: MessagesSquare },
+    { name: "Messages", path: "/Inbox", icon: MessagesSquare },
     { name: "Appointments", path: "/f", icon: Calendar },
     { name: "Profile", path:  loggedIn ? "/profile" : "/login", icon: UserRound }
   ];
@@ -113,7 +113,10 @@ export default function Sidebar() {
         {loggedIn ? (<>
         <div className="flex flex-col gap-[2rem]">
           <div className="flex w-full left-0 gap-[.5rem] items-center justify-between">
-            <div className="w-[2.5rem] h-[2.5rem] border-2 border-[#181940]  rounded-[50%] bg-[#181940]"><img className="rounded-[50%]" src={userDetails?.photo || "./default-photo.png"} alt="" /></div>
+              <div className={`w-[2.5rem] h-[2.5rem] border-2  ${isActive && isTextVisible ?
+              "bottom-0"
+             : "bottom-[2.75rem]"}  
+             relative border-[#181940]  rounded-[50%] bg-[#181940]`}><img className="rounded-[50%]" src={userDetails?.photo|| "profilepi.jpg" } alt="" /></div>
             <div>
             {isActive && isTextVisible && (
               <h1 className="transition-opacity duration-400 text-[#88898b] cursor-pointer text-[.85rem]">
@@ -128,7 +131,7 @@ export default function Sidebar() {
         </div>
           
         </div><div>
-
+  
           {isActive && isTextVisible && (
               <button
               onClick={handLogout}

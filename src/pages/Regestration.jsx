@@ -1,5 +1,5 @@
 import { useState } from "react";
-import Stepper from "./Stepper";
+import Stepper from "../components/Stepper";
 
 const RegisterForm = () => {
   const [step, setStep] = useState(0);

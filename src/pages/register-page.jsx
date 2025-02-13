@@ -1,12 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 import { useState } from "react";
-import Nav from "./navbar";
+import Nav from "../components/navbar";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { toast } from "react-toastify";
-import { auth, db } from "./firebase";
+import { auth, db } from "../components/firebase";
 import { setDoc, doc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import GoogleButton from "./google";
+import GoogleButton from "../components/google";
 
 export default function Register() {
   const [email, setEmail] = useState("");
@@ -32,7 +32,12 @@ export default function Register() {
           Usertype: userType,
           Address: andress,
           Phone: phone,
-          Zip: zip
+          Zip: zip,
+          blocked: [],
+          id:user.uid,
+        });
+        await setDoc(doc(db, "userChat", user.uid), {
+          chats: []
         });
       }
       toast.success("user registered successfully", { position: "top-center" });
