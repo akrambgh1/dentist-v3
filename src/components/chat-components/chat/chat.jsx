@@ -1,7 +1,20 @@
+/* eslint-disable no-undef */
+// eslint-disable-next-line no-unused-vars
+import { onSnapshot } from "firebase/firestore";
 import Messages from "./messages";
 import UserInfos from "./userInfos";
-
+import { useEffect } from "react";
+import { db } from "../../firebase";
+import {doc} from "firebase/firestore";
 function Chat() {
+  
+    useEffect(() => {
+      const unSub = onSnapshot(
+        doc(db, "chats", "chatId"), (res) => {
+        setChat(res.data());
+      });
+      return()=>{unSub();} 
+  }, []);
   return (
     <>
       <section className="px-6 py-6 h-full w-[65%] flex flex-col gap-[1rem]">

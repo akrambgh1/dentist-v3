@@ -1,3 +1,4 @@
+/* eslint-disable no-undef */
 
 import ChatList from "./chat-list";
 import { Search } from "lucide-react";
@@ -6,13 +7,12 @@ import { collection, query, where, getDocs, serverTimestamp,doc ,setDoc, updateD
 import { db } from "../../firebase";
 import { SquarePen } from 'lucide-react';
 
-import { useContext } from "react";
-import { UserContext } from "../../../UserContext";
+import { useUserStore } from "../../userStore";
 function List() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [users, setUsers] = useState([]);
-  const { userDetails } = useContext(UserContext);
+  const { userDetails } = useUserStore();
 
   useEffect(() => {
     const fetchUsers = async () => {

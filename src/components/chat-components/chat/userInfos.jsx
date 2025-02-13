@@ -1,7 +1,5 @@
-/* eslint-disable no-unused-vars */
-import { useContext } from "react";
-import { UserContext } from "../../../UserContext";
-import { EllipsisVertical, Phone } from "lucide-react";
+
+import { EllipsisVertical,Phone } from 'lucide-react';
 const UserInfos = () => {
   return (
     <div className="flex items-center  w-full gap-4 p-2">

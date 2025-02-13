@@ -1,8 +1,7 @@
-import  { useContext } from 'react';
-import { UserContext } from "../../../UserContext";
+import { useUserStore } from '../../userStore';
 import { SquarePen } from 'lucide-react';
 const UserInfo = () => {
-    const { userDetails } = useContext(UserContext);
+    const { userDetails } = useUserStore()
   
   return (
     <section className='flex items-center  w-full gap-[3rem]'>
