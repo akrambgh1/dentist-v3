@@ -1,8 +1,19 @@
 // eslint-disable-next-line no-unused-vars
+import { onSnapshot } from "firebase/firestore";
 import Messages from "./messages";
 import UserInfos from "./userInfos";
-
+import { useEffect } from "react";
+import { db } from "../../firebase";
+import {doc} from "firebase/firestore";
 function Chat() {
+  
+    useEffect(() => {
+      const unSub = onSnapshot(
+        doc(db, "chats", "chatId"), (res) => {
+        setChat(res.data());
+      });
+      return()=>{unSub();} 
+  }, []);
   return (
     <>
       <div className="flex-1  h-full  pt-10 border-r border-[#e0e0e0] flex flex-col gap-5 items-start p-4 pt-10">

@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import { useState,useContext} from "react";
+import { useState} from "react";
 import { Link, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { auth } from "./firebase";
@@ -13,8 +13,8 @@ import {
   ArrowLeft,
   LogIn
 } from "lucide-react";
-
-import { UserContext } from "../UserContext";
+import { useNavigate } from "react-router-dom";
+import { useUserStore } from "./userStore";
 // import FileDropArea from "./Filedrop";
 
 export default function Sidebar() {
@@ -22,7 +22,8 @@ export default function Sidebar() {
   const [isTextVisible, setIsTextVisible] = useState(false);
   const loggedIn = window.localStorage.getItem("logged_in");
   const location = useLocation(); // Get the current URL
-  const { userDetails } = useContext(UserContext);
+  const { userDetails } = useUserStore();
+  const navigate = useNavigate();
   const toggleActive = () => {
     setIsActive((prev) => {
       if (!prev) {

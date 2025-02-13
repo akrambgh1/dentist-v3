@@ -3,11 +3,10 @@ import { useEffect } from "react";
 import { db } from "../../firebase";
 import { onSnapshot, doc,getDoc } from "firebase/firestore";
 import { useState } from "react";
-import { useContext } from "react";
-import { UserContext } from "../../../UserContext";
+import { useUserStore } from "../../userStore";
 const chatList = () => {
   const [chats, setChats] = useState([]);
-  const { userDetails } = useContext(UserContext);
+  const { userDetails } = useUserStore();
 
   useEffect(() => {
     if (!userDetails?.id) return; // Ensure userDetails.id exists

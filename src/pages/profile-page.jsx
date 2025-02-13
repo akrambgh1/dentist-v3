@@ -1,14 +1,14 @@
 import { useNavigate } from "react-router-dom";
-import { useContext, useState } from "react";
+import {  useState } from "react";
 import { toast } from "react-toastify";
 import { auth } from "../components/firebase";
-import { UserContext } from "../UserContext";
+import { useUserStore } from "../components/userStore";
 import { BarLoader } from "react-spinners";
 import Sidebar from "../components/Sidebar";
 import Nav from "../components/navbar";
 
 export default function Profile() {
-  const { userDetails } = useContext(UserContext);
+  const { userDetails } = useUserStore()
   const [activeTab, setActiveTab] = useState("tab2");
 
   const navigate = useNavigate();

@@ -3,16 +3,15 @@ import Nav from "../components/navbar";
 import { Link } from "react-router-dom";
 import Card from "../components/Card";
 import { Hospital, Calendar, Check, NotebookPen } from "lucide-react";
-import { UserContext } from "../UserContext";
-import { useContext } from "react";
+
 import Sidebar from "../components/Sidebar";
 import { Button2 } from "../components/Button";
 import Footer from "../components/Footer";
-
+import { useUserStore } from "../components/userStore";
 export default function Home() {
   const loggedIn = window.localStorage.getItem("logged_in");
-  const { userDetails } = useContext(UserContext);
-
+  
+  const { currentUser } = useUserStore()
   return (
     <>
       <Nav />
@@ -32,7 +31,7 @@ export default function Home() {
                 </h2>
                 {loggedIn ? (<>
                 
-                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{userDetails?.Firstname}</span></h1>
+                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{currentUser?.Firstname}</span></h1>
                   </>) : (<Link to="/Register">
                     <Button2 text={"Sign up"} />
                   </Link>)}

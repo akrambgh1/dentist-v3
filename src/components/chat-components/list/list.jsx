@@ -6,13 +6,12 @@ import { useState, useEffect } from "react";
 import { collection, query, where, getDocs, serverTimestamp,doc ,setDoc, updateDoc,arrayUnion} from "firebase/firestore";
 import { db } from "../../firebase";
 
-import { useContext } from "react";
-import { UserContext } from "../../../UserContext";
+import { useUserStore } from "../../userStore";
 function List() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [users, setUsers] = useState([]);
-  const { userDetails } = useContext(UserContext);
+  const { userDetails } = useUserStore();
 
   useEffect(() => {
     const fetchUsers = async () => {

@@ -1,5 +1,4 @@
-import  { useContext } from 'react';
-import { UserContext } from "../../../UserContext";
+
 import { EllipsisVertical,Phone } from 'lucide-react';
 const UserInfos = () => {
     
