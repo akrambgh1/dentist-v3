@@ -31,7 +31,7 @@ export default function Home() {
                 </h2>
                 {loggedIn ? (<>
                 
-                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{currentUser?.Firstname}</span></h1>
+                  {/* <h1 className="text-6xl text-[#181940]">welcome back, <span>{currentUser?.Firstname}</span></h1> */}
                   </>) : (<Link to="/Register">
                     <Button2 text={"Sign up"} />
                   </Link>)}

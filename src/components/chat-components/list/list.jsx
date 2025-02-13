@@ -5,7 +5,7 @@ import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
 import { collection, query, where, getDocs, serverTimestamp,doc ,setDoc, updateDoc,arrayUnion} from "firebase/firestore";
 import { db } from "../../firebase";
-import { SquarePen } from 'lucide-react';
+
 
 import { useUserStore } from "../../userStore";
 function List() {
@@ -87,7 +87,7 @@ function List() {
   return (
     <>
       <div className="w-[35%] h-screen flex flex-col gap-5 items-start p-4 pt-15 scrollbar-none">
-        <UserInfo />
+        
 
         <div className={`flex flex-col scrollbar-none border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${isTyping ? "gap-[1rem]" : "h-11"}`}>
           <div className={ `flex items-center gap-4`}>
@@ -126,20 +126,3 @@ function List() {
 export default List;
 
 
-const UserInfo = () => {
-  const { userDetails } = useContext(UserContext);
-
-return (
-  <section className='flex items-center w-full gap-[3rem]'>
-  <div className=' flex flex-1 items-center justify-start w-full gap-2'>
-    <div className='rounded-[] w-12'>
-      <img className='rounded-[50%] w-10 h-10' src={userDetails?.photo|| "profilepi.jpg"} alt="" />
-    </div>
-      <h1>{ userDetails?.Firstname}</h1>
-          
-          
-    </div>
-    <SquarePen />
-  </section>
-)
-}
