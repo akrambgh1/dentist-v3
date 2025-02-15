@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { doc, onSnapshot ,getDoc} from "firebase/firestore";
+import { doc, onSnapshot, getDoc } from "firebase/firestore";
 
+import { Skeleton } from "@heroui/skeleton";
 import { useUserStore } from "../../userStore";
 import { useChatStore } from "../../userChatStore";
 
@@ -9,6 +10,7 @@ const ChatList = () => {
   const [chats, setChats] = useState([]);
   const { userDetails } = useUserStore();
   const { chatId, changeChat } = useChatStore();
+  const [timestamps, setTimestamps] = useState({});
 
   useEffect(() => {
     if (!userDetails?.id) {
@@ -21,29 +23,34 @@ const ChatList = () => {
     const fetchChats = (userId) => {
       try {
         console.log(`Listening for chat updates for user: ${userId}`);
-        
+
         // Listen for real-time updates of the user's chats
         const userChatsRef = doc(db, "userChat", userId);
 
         const unsubscribe = onSnapshot(userChatsRef, async (userChatsDoc) => {
           if (userChatsDoc.exists()) {
-            const chatIdsData = userChatsDoc.data(); // This is the object with chatIds
-            console.log("📡 chatIdsData:", chatIdsData); // Log the entire object
+            const chatIdsData = userChatsDoc.data();
+            console.log("📡 chatIdsData:", chatIdsData);
 
-            const chatIds = Object.entries(chatIdsData.chats || {}); // Access the nested 'chats' object
+            const chatIds = Object.entries(chatIdsData.chats || {});
             console.log("📡 Fetched chatIds:", chatIds);
 
-            // Process each chatId
             const chats = await Promise.all(
               chatIds.map(async ([chatId, chatData]) => {
-                if (chatData && chatData.updatedAt && chatData.lastMessage !== undefined) {
+                if (
+                  chatData &&
+                  chatData.updatedAt &&
+                  chatData.lastMessage !== undefined
+                ) {
                   const chatDocRef = doc(db, "Chats", chatId);
                   const chatDoc = await getDoc(chatDocRef);
                   if (chatDoc.exists()) {
-                    const receiverId = chatData.receiverId || userId; // Default to userId if receiverId is missing
+                    const receiverId = chatData.receiverId || userId;
                     const receiverDocRef = doc(db, "users", receiverId);
                     const receiverDoc = await getDoc(receiverDocRef);
-                    const receiverData = receiverDoc.exists() ? receiverDoc.data() : null;
+                    const receiverData = receiverDoc.exists()
+                      ? receiverDoc.data()
+                      : null;
 
                     return {
                       chatId,
@@ -58,46 +65,122 @@ const ChatList = () => {
               })
             );
 
-            // Filter out any undefined or null results from the Promise.all
             const filteredChats = chats.filter(Boolean);
-
-            console.log("📡 Chats data:", filteredChats);
-
-            // Sort chats and set state
-            filteredChats.sort((a, b) => b.updatedAt.seconds - a.updatedAt.seconds);
+            filteredChats.sort(
+              (a, b) => b.updatedAt.seconds - a.updatedAt.seconds
+            );
             setChats(filteredChats);
             console.log("✅ Chats sorted and set:", filteredChats);
+
+            filteredChats.forEach((chat) => {
+              const chatUpdatedAt = new Date(chat.updatedAt.seconds * 1000);
+
+              // If this chat was just updated, set it to "Just now"
+              const now = new Date();
+              const timeDiff = (now - chatUpdatedAt) / 1000; // Difference in seconds
+
+              setTimestamps((prev) => ({
+                ...prev,
+                [chat.chatId]:
+                  timeDiff <= 10
+                    ? "Just now"
+                    : chatUpdatedAt.toLocaleTimeString([], {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: false,
+                      }),
+              }));
+
+              // ✅ After 10 seconds, reset back to time
+              if (timeDiff <= 10) {
+                setTimeout(() => {
+                  setTimestamps((prev) => ({
+                    ...prev,
+                    [chat.chatId]: chatUpdatedAt.toLocaleTimeString(),
+                  }));
+                }, 10000);
+              }
+            });
           } else {
             console.log("No chats found for user.");
           }
         });
 
-        // Cleanup on component unmount
         return () => {
-          unsubscribe(); // Unsubscribe when the component unmounts
+          unsubscribe();
         };
-
       } catch (error) {
         console.error("Error fetching chats:", error);
       }
     };
 
-    // Call fetchChats to listen for real-time updates
     fetchChats(userDetails.id);
   }, [userDetails?.id]);
 
   return (
-    <div className="w-full gap-5 flex flex-col overflow-y-scroll p-2">
+    <div className="w-full  gap-5  flex flex-col overflow-y-scroll p-2">
       {chats.length === 0 ? (
-        <p className="text-gray-500 text-center">No chats available</p>
+        <>
+
+          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+  <div>
+    <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
+  </div>
+  <div className="w-full flex flex-col gap-2">
+    <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
+    <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
+  </div>
+</div><div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+  <div>
+    <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
+  </div>
+  <div className="w-full flex flex-col gap-2">
+    <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
+    <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
+  </div>
+</div><div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+  <div>
+    <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
+  </div>
+  <div className="w-full flex flex-col gap-2">
+    <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
+    <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
+  </div>
+</div><div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+  <div>
+    <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
+  </div>
+  <div className="w-full flex flex-col gap-2">
+    <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
+    <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
+  </div>
+          </div>
+          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+  <div>
+    <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
+  </div>
+  <div className="w-full flex flex-col gap-2">
+    <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
+    <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
+  </div>
+</div>
+          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+  <div>
+    <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
+  </div>
+  <div className="w-full flex flex-col gap-2">
+    <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
+    <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
+  </div>
+</div>
+        </>
       ) : (
-        chats.map((chat) => (
+        chats?.map((chat) => (
           <div
             key={chat.chatId}
             onClick={() => changeChat(chat.chatId, chat.user)}
             className={`rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 cursor-pointer 
-            ${chatId === chat.chatId ? "bg-gray-200" : "hover:bg-gray-100"}`}
-          >
+      ${chatId === chat.chatId ? "bg-gray-200" : "hover:bg-gray-100"}`}>
             <img
               className="rounded-full w-12 h-12 object-cover"
               src={chat.user?.photo || "/profilepi.jpg"}
@@ -105,18 +188,24 @@ const ChatList = () => {
             />
             <div className="w-full">
               <div className="flex justify-between items-center">
-                <h1 className="font-semibold text-lg">{chat.user?.Firstname || "Unknown"}</h1>
+                <h1 className="font-semibold text-lg">
+                  {chat.user?.Firstname || "Unknown"}{" "}
+                  {chat.user?.Lastname || "Unknown"}
+                </h1>
                 <span className="text-sm text-gray-500">
-                  {chat.updatedAt
-                    ? new Date(chat.updatedAt.seconds).toLocaleTimeString()
-                    : ""}
+                  {timestamps[chat.chatId] || ""}
                 </span>
               </div>
-              <p className="text-gray-600 text-sm truncate">{chat.lastMessage}</p>
+              <p className="text-gray-600 text-sm truncate">
+                {chat.lastMessage}
+              </p>
             </div>
           </div>
         ))
       )}
+    
+
+     
     </div>
   );
 };
