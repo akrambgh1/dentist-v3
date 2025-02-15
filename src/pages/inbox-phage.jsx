@@ -41,9 +41,16 @@ useEffect(() => {
           {chatId && (
             <>
               <Chat />
-              <Detail />
+              
             </>
           )}
+          {/*
+           {detail && (
+            <>
+             
+              <Detail />
+            </>
+          )}*/}
         </div>
       </section>
     </>

@@ -25,7 +25,7 @@ export default function GoogleButton() {
           email: user.email,
           Lastname: result._tokenResponse.lastName,
           Firstname: result._tokenResponse.firstName,
-          lowercasedName: result._tokenResponse.firstName.toLowerCase(),
+          lowercasedName: (result._tokenResponse.firstName + ' ' + result._tokenResponse.lastName).toLowerCase(),
           photo: user.photoURL,
           phoneNumber: user.phoneNumber,
           blocked: [],

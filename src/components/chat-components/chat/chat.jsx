@@ -1,5 +1,5 @@
 import { onSnapshot, doc, getDoc, updateDoc, arrayUnion } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { db } from "../../firebase";
 import { useChatStore } from "../../userChatStore";
 import { useUserStore } from "../../userStore";
@@ -10,25 +10,39 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState("");
     const [recipient, setRecipient] = useState(null);
+    
+    const messagesContainerRef = useRef(null);
+    const isUserAtBottomRef = useRef(true);
 
     if (!userDetails) return <p>Please log in to continue.</p>;
 
     useEffect(() => {
         if (!chatId) return;
 
+        isUserAtBottomRef.current = true; // Reset scroll tracking when switching chats
+        setMessages([]); // Clear previous chat messages before loading new ones
+
         const chatRef = doc(db, "Chats", chatId);
         const unSub = onSnapshot(chatRef, async (docSnap) => {
             if (docSnap.exists()) {
                 const chatData = docSnap.data();
-                setMessages(chatData.messages || []);
+                const newMessages = chatData.messages || [];
 
-                // Get recipient ID (other user in the chat)
+                setMessages(() => {
+                    // Only scroll if the user was already at the bottom
+                    if (isUserAtBottomRef.current) {
+                        setTimeout(scrollToBottom, 100);
+                    }
+                    return newMessages;
+                });
+
+                // Get recipient details
                 const recipientId = chatData.users.find(id => id !== userDetails.id);
                 if (recipientId) {
                     const recipientRef = doc(db, "users", recipientId);
                     const recipientSnap = await getDoc(recipientRef);
                     if (recipientSnap.exists()) {
-                        setRecipient(recipientSnap.data()); // Store recipient details
+                        setRecipient(recipientSnap.data());
                     }
                 }
             }
@@ -37,12 +51,22 @@ function Chat() {
         return () => unSub();
     }, [chatId]);
 
+    const isUserAtBottom = () => {
+        if (!messagesContainerRef.current) return false;
+        const { scrollTop, scrollHeight, clientHeight } = messagesContainerRef.current;
+        return scrollHeight - scrollTop - clientHeight < 10;
+    };
+
+    const scrollToBottom = () => {
+        messagesContainerRef.current?.scrollTo({ top: messagesContainerRef.current.scrollHeight, behavior: "smooth" });
+    };
+
     const handleSendMessage = async () => {
         if (!messageText.trim() || !chatId || !userDetails?.id) return;
-
+    
         const chatRef = doc(db, "Chats", chatId);
         const userChatSenderRef = doc(db, "userChat", userDetails.id);
-
+    
         try {
             const newMessage = {
                 senderId: userDetails.id,
@@ -54,13 +78,11 @@ function Chat() {
                 messages: arrayUnion(newMessage),
             });
 
-            // Get recipient ID
             const chatSnap = await getDoc(chatRef);
             const recipientId = chatSnap.exists()
                 ? chatSnap.data().users.find((id) => id !== userDetails.id)
                 : null;
 
-            // Update chat lists for both users
             const updates = {
                 [`chats.${chatId}.lastMessage`]: messageText,
                 [`chats.${chatId}.updatedAt`]: new Date(),
@@ -72,15 +94,16 @@ function Chat() {
             }
 
             setMessageText(""); // Clear input
-            console.log("✅ Message sent:", newMessage);
+            scrollToBottom(); // Always scroll down when sending a message
+
         } catch (error) {
             console.error("🔥 Error sending message:", error);
         }
     };
 
     return (
-        <div className="w-2/3 h-full flex flex-col">
-            {/* Chat Header - Show Recipient Info */}
+        <div className="w-2/3 h-screen flex flex-col">
+            {/* Chat Header */}
             <div className="p-4 flex items-center border-b bg-gray-100">
                 {recipient ? (
                     <>
@@ -93,7 +116,11 @@ function Chat() {
             </div>
 
             {/* Messages List */}
-            <div className="h-[80%] overflow-y-scroll p-4 flex flex-col space-y-2">
+            <div
+                ref={messagesContainerRef}
+                className="h-[80%] overflow-y-scroll p-4 flex flex-col"
+                onScroll={() => (isUserAtBottomRef.current = isUserAtBottom())}
+            >
                 {messages.map((msg, index) => {
                     const isMe = msg.senderId === userDetails.id;
                     const messageTime = msg.timestamp
@@ -107,15 +134,15 @@ function Chat() {
                         : "Just now";
 
                     return (
-                        <div key={index} className={`flex ${isMe ? "justify-end" : "justify-start"}`}>
+                        <div key={index} className={`flex flex-col items-center ${isMe ? "justify-end" : "justify-start"}`}>
                             <div
-                                className={`p-3 rounded-lg max-w-xs ${
+                                className={`p-3 pe-4 pl-4 flex rounded-4xl max-w-xs ${
                                     isMe ? "bg-blue-500 text-white self-end" : "bg-gray-200 text-black self-start"
                                 }`}
                             >
                                 <p>{msg.text}</p>
-                                <p className="text-xs text-gray-300 mt-1">{messageTime}</p>
                             </div>
+                            <p className="text-xs text-black mt-1">{messageTime}</p>
                         </div>
                     );
                 })}
@@ -129,6 +156,11 @@ function Chat() {
                     placeholder="Type a message..."
                     value={messageText}
                     onChange={(e) => setMessageText(e.target.value)}
+                    onKeyDown={(e) => {
+                        if (e.key === "Enter") {
+                            handleSendMessage();
+                        }
+                    }}
                 />
                 <button onClick={handleSendMessage} className="ml-2 bg-green-500 text-white px-4 py-2 rounded-lg">
                     Send
