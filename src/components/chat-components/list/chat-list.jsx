@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
-import { 
-  collection, doc, getDoc, query, orderBy, limit, onSnapshot, getDocs 
-} from "firebase/firestore";
+import { doc, onSnapshot ,getDoc} from "firebase/firestore";
 
 import { useUserStore } from "../../userStore";
 import { useChatStore } from "../../userChatStore";
@@ -20,54 +18,72 @@ const ChatList = () => {
 
     console.log("🔍 Listening for chat updates for user:", userDetails.id);
 
-    const chatsRef = collection(db, "Chats");
+    const fetchChats = (userId) => {
+      try {
+        console.log(`Listening for chat updates for user: ${userId}`);
+        
+        // Listen for real-time updates of the user's chats
+        const userChatsRef = doc(db, "userChat", userId);
 
-    // Listen for real-time updates
-    const unsubscribe = onSnapshot(chatsRef, async (snapshot) => {
-      const chatArray = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        const unsubscribe = onSnapshot(userChatsRef, async (userChatsDoc) => {
+          if (userChatsDoc.exists()) {
+            const chatIdsData = userChatsDoc.data(); // This is the object with chatIds
+            console.log("📡 chatIdsData:", chatIdsData); // Log the entire object
 
-      const chatList = await Promise.all(
-        chatArray.map(async (chat) => {
-          if (!chat.users || chat.users.length !== 2) return null;
+            const chatIds = Object.entries(chatIdsData.chats || {}); // Access the nested 'chats' object
+            console.log("📡 Fetched chatIds:", chatIds);
 
-          // Exclude self-chats
-          const receiverId = chat.users.find(uid => uid !== userDetails.id);
-          if (!receiverId) return null;
+            // Process each chatId
+            const chats = await Promise.all(
+              chatIds.map(async ([chatId, chatData]) => {
+                if (chatData && chatData.updatedAt && chatData.lastMessage !== undefined) {
+                  const chatDocRef = doc(db, "Chats", chatId);
+                  const chatDoc = await getDoc(chatDocRef);
+                  if (chatDoc.exists()) {
+                    const receiverId = chatData.receiverId || userId; // Default to userId if receiverId is missing
+                    const receiverDocRef = doc(db, "users", receiverId);
+                    const receiverDoc = await getDoc(receiverDocRef);
+                    const receiverData = receiverDoc.exists() ? receiverDoc.data() : null;
 
-          // Fetch receiver user details
-          const userDoc = await getDoc(doc(db, "users", receiverId));
-          const userData = userDoc.exists() ? userDoc.data() : null;
+                    return {
+                      chatId,
+                      ...chatDoc.data(),
+                      lastMessage: chatData.lastMessage,
+                      updatedAt: chatData.updatedAt,
+                      user: receiverData,
+                    };
+                  }
+                }
+                return null;
+              })
+            );
 
-          // Fetch latest message
-          const messagesRef = collection(db, "Chats", chat.id, "messages");
-          const latestMessageQuery = query(messagesRef, orderBy("timestamp", "desc"), limit(1));
-          const latestMessageSnap = await getDocs(latestMessageQuery);
+            // Filter out any undefined or null results from the Promise.all
+            const filteredChats = chats.filter(Boolean);
 
-          let lastMessage = "No messages yet";
-          let lastMessageTimestamp = null;
+            console.log("📡 Chats data:", filteredChats);
 
-          if (!latestMessageSnap.empty) {
-            const latestMsgData = latestMessageSnap.docs[0].data();
-            lastMessage = latestMsgData.text || "📎 Attachment";
-            lastMessageTimestamp = latestMsgData.timestamp;
-            if (latestMsgData.senderId === userDetails.id) {
-              lastMessage = `You: ${lastMessage}`;
-            }
+            // Sort chats and set state
+            filteredChats.sort((a, b) => b.updatedAt.seconds - a.updatedAt.seconds);
+            setChats(filteredChats);
+            console.log("✅ Chats sorted and set:", filteredChats);
+          } else {
+            console.log("No chats found for user.");
           }
+        });
 
-          return userData ? { ...chat, user: userData, lastMessage, lastMessageTimestamp } : null;
-        })
-      );
+        // Cleanup on component unmount
+        return () => {
+          unsubscribe(); // Unsubscribe when the component unmounts
+        };
 
-      const sortedChats = chatList.filter(Boolean).sort((a, b) => {
-        return (b.lastMessageTimestamp || 0) - (a.lastMessageTimestamp || 0);
-      });
+      } catch (error) {
+        console.error("Error fetching chats:", error);
+      }
+    };
 
-      setChats(sortedChats);
-    });
-
-    // Cleanup the listener on unmount
-    return () => unsubscribe();
+    // Call fetchChats to listen for real-time updates
+    fetchChats(userDetails.id);
   }, [userDetails?.id]);
 
   return (
@@ -77,10 +93,10 @@ const ChatList = () => {
       ) : (
         chats.map((chat) => (
           <div
-            key={chat.id}
-            onClick={() => changeChat(chat.id, chat.user)}
+            key={chat.chatId}
+            onClick={() => changeChat(chat.chatId, chat.user)}
             className={`rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 cursor-pointer 
-            ${chatId === chat.id ? "bg-gray-200" : "hover:bg-gray-100"}`}
+            ${chatId === chat.chatId ? "bg-gray-200" : "hover:bg-gray-100"}`}
           >
             <img
               className="rounded-full w-12 h-12 object-cover"
@@ -91,8 +107,8 @@ const ChatList = () => {
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold text-lg">{chat.user?.Firstname || "Unknown"}</h1>
                 <span className="text-sm text-gray-500">
-                  {chat.lastMessageTimestamp
-                    ? new Date(chat.lastMessageTimestamp.toDate()).toLocaleTimeString()
+                  {chat.updatedAt
+                    ? new Date(chat.updatedAt.seconds).toLocaleTimeString()
                     : ""}
                 </span>
               </div>

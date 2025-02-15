@@ -93,7 +93,19 @@ function List() {
             { merge: true }
         );
 
-      
+        await setDoc(
+            userChatReceiverRef,
+            {
+                chats: {
+                    [chatId]: {
+                        lastMessage: "",
+                        receiverId: userDetails.id,
+                        updatedAt: serverTimestamp(),
+                    },
+                },
+            },
+            { merge: true }
+        );
 
         console.log("✅ New chat added:", chatId);
     } catch (error) {
