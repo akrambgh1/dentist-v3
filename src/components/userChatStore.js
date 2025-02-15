@@ -1,37 +1,40 @@
-
 import { create } from 'zustand'
-import { doc, getDoc } from "firebase/firestore";
+import { useUserStore } from './userStore';
 
-import { db } from './firebase';
 export const useChatStore = create((set) => ({
-    ChatId: null,
+    chatId: null,
     user: null,
-    iscurrentUserBlocked:false, 
+    iscurrentUserBlocked: false, 
     isReceiverUserBlocked: false, 
-
     
-    
-    isLodding: true,
-    fetchUsersInfo: async (uid) => {
-        if (!uid) return set({ userDetails: null, isLodding: true });
-        try {
-            
+    changeChat: (chatId, user) => {
+        
+        const userDetails = useUserStore.getState().userDetails;
 
-            const docRef = doc(db, "users", uid);
-            const docSnap = await getDoc(docRef);
+        if (!userDetails) return;
 
-            if (docSnap.exists()) {
-                set({ userDetails: docSnap.data(), isLodding: false });
-            } else {
-                set({ userDetails: null, isLodding: true });
-  
-                console.log("No such document!");
-            }
-        } catch (err) {
-            console.error('Error fetching user info', err)
+        if (user.blocked.includes(userDetails.id)) {
             
-            return set({ userDetails: null, isLodding: false });
+            return set({
+                chatId,
+                user: null,
+                iscurrentUserBlocked: true, 
+                isReceiverUserBlocked: false, 
+            });
+        } else if (userDetails.blocked.includes(user.id)) {
+            return  set({
+                chatId,
+                user: user,
+                iscurrentUserBlocked: false,
+                isReceiverUserBlocked: true,
+            });
+        } else {
+            return   set({
+                chatId,
+                user,
+                iscurrentUserBlocked: false,
+                isReceiverUserBlocked: false,
+            });
         }
     },
 }));
-

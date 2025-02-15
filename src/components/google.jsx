@@ -1,54 +1,57 @@
 import { auth, db } from "./firebase"; 
-import { setDoc, doc } from "firebase/firestore"; 
+import { setDoc, doc, getDoc } from "firebase/firestore"; 
 import { GoogleAuthProvider, signInWithPopup } from "firebase/auth"; 
 import { toast } from "react-toastify"; 
 import { useNavigate } from "react-router-dom"; 
+
 export default function GoogleButton() { 
-      const navigate = useNavigate(); 
-     
-const handleGRegister = async (e) => { 
+  const navigate = useNavigate(); 
+
+  const handleGRegister = async (e) => { 
     e.preventDefault(); 
     try { 
-       
-    const provider = new GoogleAuthProvider(); 
-       
-    signInWithPopup(auth, provider).then((result) => { 
-      console.log(result) 
-      if (result.user) 
-        setDoc(doc(db, "users", result.user.uid), { 
-          email: result.user.email, 
-          Lastname: result._tokenResponse.lastName, 
-          Firstname: result._tokenResponse.firstName, 
+      const provider = new GoogleAuthProvider(); 
+      const result = await signInWithPopup(auth, provider); 
+      const user = result.user;
+
+      if (!user) return;
+
+      const userRef = doc(db, "users", user.uid);
+      const userSnap = await getDoc(userRef);
+
+      if (!userSnap.exists()) {
+        console.log("New user detected. Creating profile...");
+        await setDoc(userRef, {
+          email: user.email,
+          Lastname: result._tokenResponse.lastName,
+          Firstname: result._tokenResponse.firstName,
           lowercasedName: result._tokenResponse.firstName.toLowerCase(),
-          photo:result.user.photoURL, 
-          phoneNumber: result.user.phoneNumber, 
+          photo: user.photoURL,
+          phoneNumber: user.phoneNumber,
           blocked: [],
-          id: result.user.uid,
-          
-   
-       
+          id: user.uid,
         });
-        setDoc(doc(db, "userChat", result.user.uid), { 
+
+        // Create userChat document ONLY if user is new
+        await setDoc(doc(db, "userChat", user.uid), { 
           chats: [] 
         }); 
-          
-      {
-        setTimeout(() => { 
+      } else {
+        console.log("User already exists. Logging in...");
+      }
+
+      // Store login state
+      window.localStorage.setItem("logged_in", true);
+
+      setTimeout(() => { 
         navigate("/"); 
-        }, 1000);
-        window.localStorage.setItem("logged_in" , true);
-        ; toast.success("user registered successfully", { position: "top-center", });
-      } 
-    }) 
-        
-        
-      } 
-       
-       
-     catch (error) { 
-      toast.error(error.message,{position:"top-center",}); 
+      }, 1000);
+
+      toast.success("User registered successfully", { position: "top-center" });
+
+    } catch (error) { 
+      toast.error(error.message, { position: "top-center" }); 
     } 
-     
   }; 
 
   return (

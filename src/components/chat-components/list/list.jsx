@@ -3,8 +3,9 @@ import ChatList from "./chat-list";
 import UserInfo from "./userInfo";
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, serverTimestamp,doc ,setDoc, updateDoc,arrayUnion} from "firebase/firestore";
+import { collection, query, where, getDocs, serverTimestamp,doc ,setDoc, updateDoc,arrayUnion,getDoc} from "firebase/firestore";
 import { db } from "../../firebase";
+
 
 import { useUserStore } from "../../userStore";
 function List() {
@@ -42,47 +43,78 @@ function List() {
 
     fetchUsers();
   }, [searchTerm]);
-  console.log("users", users);
+
   const handleInputChange = (e) => {
     setSearchTerm(e.target.value.toLowerCase());
     setIsTyping(e.target.value.length > 0); // Show text only when input is not empty
   };
-  const handleAddingUser = async (user) => {
-    const chatRef = collection(db, "Chats");
-    const userChatRef = collection(db, "userChat");
-   
-    try {
-      const newChatRef = doc(chatRef);
-      await setDoc(newChatRef, {
-        createdAt: serverTimestamp(),
-        messages: [],
-        
-      },{ merge: true }
-      )
-      await updateDoc(doc(userChatRef,user.id),{
-        chats: arrayUnion({
-          chatId: newChatRef.id,
-          LastMessage: "",
-          receiverId: userDetails.id,
-          updatedAt: Date.now(),
-        }),
-      })
-      await updateDoc(doc(userChatRef,userDetails.id), {
-        chats: arrayUnion({
-          chatId: newChatRef.id,
-          LastMessage: "",
-          receiverId: user.id,
-          updatedAt: Date.now(),
-        }),
-      })
-    
-  
-    }
-    catch (error) {
 
-      console.log(error);
-    };
-  }
+  const handleAddingUser = async (user) => {
+    if (!user.id || !userDetails?.id) return;
+
+    try {
+        const chatRef = collection(db, "Chats");
+        const userChatRef = collection(db, "userChat");
+
+        // Generate a unique chat ID (alphabetically sorted)
+        const chatId =
+            userDetails.id > user.id
+                ? `${userDetails.id}_${user.id}`
+                : `${user.id}_${userDetails.id}`;
+
+        // **Check if a chat already exists**
+        const chatDocRef = doc(chatRef, chatId);
+        const chatSnap = await getDoc(chatDocRef);
+
+        if (!chatSnap.exists()) {
+            // Create chat if it doesn't exist
+            await setDoc(chatDocRef, {
+                createdAt: serverTimestamp(),
+                messages: [],
+                users: [userDetails.id, user.id],
+            });
+        }
+
+        // **Update userChat for both users**
+        const userChatSenderRef = doc(userChatRef, userDetails.id);
+        const userChatReceiverRef = doc(userChatRef, user.id);
+
+        await setDoc(
+            userChatSenderRef,
+            {
+                chats: {
+                    [chatId]: {
+                        lastMessage: "",
+                        receiverId: user.id,
+                        updatedAt: serverTimestamp(),
+                    },
+                },
+            },
+            { merge: true }
+        );
+
+        await setDoc(
+            userChatReceiverRef,
+            {
+                chats: {
+                    [chatId]: {
+                        lastMessage: "",
+                        receiverId: userDetails.id,
+                        updatedAt: serverTimestamp(),
+                    },
+                },
+            },
+            { merge: true }
+        );
+
+        console.log("✅ New chat added:", chatId);
+    } catch (error) {
+        console.error("🔥 Error adding user to chat:", error);
+    }
+};
+
+
+  
   return (
     <>
       <div className="flex-1  h-screen  pt-10 border-r border-[#e0e0e0] flex flex-col gap-5 items-start p-4 pt-15">
@@ -102,8 +134,8 @@ function List() {
             {isTyping && (<>
               {users.length > 0 ? (
                 users.map((user) => <div className="flex items-center gap-1.5" key={user.id}>
-                  <img 
-                    src={user.photo}
+                  <img
+                    src={user.photo || "profilepi.jpg" }
                     alt={user.Firstname}
                     className="w-8 h-8 rounded-full object-cover"
                   />

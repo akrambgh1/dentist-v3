@@ -34,7 +34,9 @@ export default function Register() {
           Phone: phone,
           Zip: zip,
           blocked: [],
-          id:user.uid,
+          id: user.uid,
+
+          lowercasedName: fname.toLowerCase(),
         });
         await setDoc(doc(db, "userChat", user.uid), {
           chats: []

@@ -11,7 +11,8 @@ import { useUserStore } from "../components/userStore";
 export default function Home() {
   const loggedIn = window.localStorage.getItem("logged_in");
   
-  const { currentUser } = useUserStore()
+  const { userDetails } = useUserStore()
+  
   return (
     <>
       <Nav />
@@ -31,7 +32,7 @@ export default function Home() {
                 </h2>
                 {loggedIn ? (<>
                 
-                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{currentUser?.Firstname}</span></h1>
+                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{userDetails?.Firstname}</span></h1>
                   </>) : (<Link to="/Register">
                     <Button2 text={"Sign up"} />
                   </Link>)}

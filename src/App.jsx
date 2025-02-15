@@ -10,20 +10,10 @@ import SearchPage from "./pages/SearchPage";
 import RegisterForm from "./pages/Regestration";
 import Inbox from "./pages/inbox-phage";
 
-import { useEffect } from "react";
-import { useUserStore} from "./components/userStore";
-import { auth } from "./components/firebase";
-import { onAuthStateChanged } from "firebase/auth";
+
 function App() {
-  const {userDetails, fetchUsersInfo} = useUserStore();
-  useEffect(() => { 
-    const unSub = onAuthStateChanged(auth, (user) => {
-      fetchUsersInfo(user.uid);
-    }); return () => {
-      unSub()
-    } ;
-  }, [fetchUsersInfo]);
-  console.log(userDetails)
+  
+  
   return (
     <>
       <Router>
