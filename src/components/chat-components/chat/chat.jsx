@@ -12,6 +12,7 @@ function Chat() {
     const [messages, setMessages] = useState([]);
     const [messageText, setMessageText] = useState("");
     const [recipient, setRecipient] = useState(null);
+    const [isTyping, setIsTyping] = useState(null);
     
     const messagesContainerRef = useRef(null);
     const isUserAtBottomRef = useRef(true);
@@ -21,8 +22,8 @@ function Chat() {
     useEffect(() => {
         if (!chatId) return;
 
-        isUserAtBottomRef.current = true; // Reset scroll tracking when switching chats
-        setMessages([]); // Clear previous chat messages before loading new ones
+        isUserAtBottomRef.current = true;
+        setMessages([]);
 
         const chatRef = doc(db, "Chats", chatId);
         const unSub = onSnapshot(chatRef, async (docSnap) => {
@@ -31,14 +32,12 @@ function Chat() {
                 const newMessages = chatData.messages || [];
 
                 setMessages(() => {
-                    // Only scroll if the user was already at the bottom
                     if (isUserAtBottomRef.current) {
                         setTimeout(scrollToBottom, 100);
                     }
                     return newMessages;
                 });
 
-                // Get recipient details
                 const recipientId = chatData.users.find(id => id !== userDetails.id);
                 if (recipientId) {
                     const recipientRef = doc(db, "users", recipientId);
@@ -47,6 +46,8 @@ function Chat() {
                         setRecipient(recipientSnap.data());
                     }
                 }
+
+                setIsTyping(chatData.typing === recipientId ? recipientId : null);
             }
         });
 
@@ -63,49 +64,73 @@ function Chat() {
         messagesContainerRef.current?.scrollTo({ top: messagesContainerRef.current.scrollHeight, behavior: "smooth" });
     };
 
-    const handleSendMessage = async () => {
-        if (!messageText.trim() || !chatId || !userDetails?.id) return;
-    
-        const chatRef = doc(db, "Chats", chatId);
-        const userChatSenderRef = doc(db, "userChat", userDetails.id);
-    
-        try {
-            const newMessage = {
-                senderId: userDetails.id,
-                text: messageText,
-                timestamp: new Date(),
-            };
-
-            await updateDoc(chatRef, {
-                messages: arrayUnion(newMessage),
-            });
-
-            const chatSnap = await getDoc(chatRef);
-            const recipientId = chatSnap.exists()
-                ? chatSnap.data().users.find((id) => id !== userDetails.id)
-                : null;
-
-            const updates = {
-                [`chats.${chatId}.lastMessage`]: messageText,
-                [`chats.${chatId}.updatedAt`]: new Date(),
-            };
-
-            await updateDoc(userChatSenderRef, updates);
-            if (recipientId) {
-                await updateDoc(doc(db, "userChat", recipientId), updates);
-            }
-
-            setMessageText(""); // Clear input
-            scrollToBottom(); // Always scroll down when sending a message
-
-        } catch (error) {
-            console.error("🔥 Error sending message:", error);
+    const formatMessageTime = (timestamp, prevTimestamp) => {
+        if (!timestamp) return "Just now";
+        
+        const messageDate = new Date(timestamp.seconds * 1000);
+        const prevMessageDate = prevTimestamp ? new Date(prevTimestamp.seconds * 1000) : null;
+        const now = new Date();
+        const options = { hour: "2-digit", minute: "2-digit" };
+        
+        if (prevMessageDate && (messageDate - prevMessageDate) < 5 * 60 * 1000) {
+            return ""; // Hide timestamp if within 5 minutes
         }
+        
+        if (
+            messageDate.getDate() === now.getDate() &&
+            messageDate.getMonth() === now.getMonth() &&
+            messageDate.getFullYear() === now.getFullYear()
+        ) {
+            return messageDate.toLocaleTimeString("en-GB", options);
+        }
+        
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        
+        if (
+            messageDate.getDate() === yesterday.getDate() &&
+            messageDate.getMonth() === yesterday.getMonth() &&
+            messageDate.getFullYear() === yesterday.getFullYear()
+        ) {
+            return `Yesterday, ${messageDate.toLocaleTimeString("en-GB", options)}`;
+        }
+        
+        if (messageDate.getFullYear() === now.getFullYear()) {
+            return `${messageDate.toLocaleDateString("en-GB", { weekday: "long" })}, ${messageDate.toLocaleTimeString("en-GB", options)}`;
+        }
+        
+        return messageDate.toLocaleString("en-GB", { day: "2-digit", month: "2-digit", year: "numeric", hour: "2-digit", minute: "2-digit" });
+    };
+
+    const sendMessage = async () => {
+        if (!messageText.trim()) return;
+
+        const chatRef = doc(db, "Chats", chatId);
+        const newMessage = {
+            senderId: userDetails.id,
+            text: messageText,
+            timestamp: new Date()
+        };
+
+        await updateDoc(chatRef, {
+            messages: arrayUnion(newMessage),
+            updatedAt: new Date()
+        });
+
+        setMessageText("");
+        setTimeout(scrollToBottom, 100);
+    };
+
+    const handleTyping = async () => {
+        const chatRef = doc(db, "Chats", chatId);
+        await updateDoc(chatRef, { typing: userDetails.id });
+        setTimeout(async () => {
+            await updateDoc(chatRef, { typing: null });
+        }, 2000);
     };
 
     return (
         <div className="w-2/3 h-screen flex flex-col">
-            {/* Chat Header */}
             <div className="p-4 flex items-center border-b bg-gray-100">
                 {recipient ? (
                     <>
@@ -117,7 +142,6 @@ function Chat() {
                 )}
             </div>
 
-            {/* Messages List */}
             <div
                 ref={messagesContainerRef}
                 className="h-[80%] overflow-y-scroll p-4 flex flex-col"
@@ -125,48 +149,34 @@ function Chat() {
             >
                 {messages.map((msg, index) => {
                     const isMe = msg.senderId === userDetails.id;
-                    const messageTime = msg.timestamp
-                        ? new Date(msg.timestamp.seconds * 1000).toLocaleString("en-GB", {
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              day: "2-digit",
-                              month: "2-digit",
-                              year: "numeric",
-                          })
-                        : "Just now";
+                    const prevMessage = messages[index - 1];
+                    const messageTime = formatMessageTime(msg.timestamp, prevMessage?.timestamp);
 
                     return (
                         <div key={index} className={`flex flex-col items-center ${isMe ? "justify-end" : "justify-start"}`}>
-                            <div
-                                className={`p-3 pe-4 pl-4 flex rounded-4xl max-w-xs ${
-                                    isMe ? "bg-blue-500 text-white self-end" : "bg-gray-200 text-black self-start"
-                                }`}
-                            >
+                            <div className={`p-3 pe-4 pl-4 flex m-2 rounded-4xl max-w-xs ${isMe ? "bg-blue-500 text-white self-end" : "bg-gray-200 text-black self-start"}`}>
                                 <p>{msg.text}</p>
                             </div>
-                            <p className="text-xs text-black mt-1">{messageTime}</p>
+                            {messageTime && <p className="text-xs text-black mt-1">{messageTime}</p>}
                         </div>
                     );
                 })}
             </div>
 
-            {/* Message Input */}
-            <div className="p-4 flex items-center">
+            {isTyping && (
+                <p className="text-gray-500 text-sm px-4">{recipient?.Firstname || "User"} is typing ......</p>
+            )}
+
+            <div className="p-4 border-t bg-white flex items-center">
                 <input
                     type="text"
-                    className="flex-1 border border-gray-300 rounded-lg p-2"
+                    className="flex-1 p-2 border rounded-lg"
                     placeholder="Type a message..."
                     value={messageText}
-                    onChange={(e) => setMessageText(e.target.value)}
-                    onKeyDown={(e) => {
-                        if (e.key === "Enter") {
-                            handleSendMessage();
-                        }
-                    }}
+                    onChange={(e) => { setMessageText(e.target.value); handleTyping(); }}
+                    onKeyDown={(e) => e.key === "Enter" && sendMessage()}
                 />
-                <button onClick={handleSendMessage} className="ml-2 bg-green-500 text-white px-4 py-2 rounded-lg">
-                    Send
-                </button>
+                <button className="ml-2 p-2 bg-blue-500 text-white rounded-lg" onClick={sendMessage}>Send</button>
             </div>
         </div>
     );

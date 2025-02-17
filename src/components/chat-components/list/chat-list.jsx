@@ -183,7 +183,7 @@ const ChatList = () => {
       ${chatId === chat.chatId ? "bg-gray-200" : "hover:bg-gray-100"}`}>
             <img
               className="rounded-full w-12 h-12 object-cover"
-              src={chat.user?.photo || "/profilepi.jpg"}
+              src={chat.user?.photo || "profilepi.jpg"}
               alt="Profile"
             />
             <div className="w-full">

@@ -3,11 +3,10 @@ import ChatList from "./chat-list";
 import UserInfo from "./userInfo";
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, serverTimestamp,doc ,setDoc, updateDoc,arrayUnion,getDoc} from "firebase/firestore";
+import { collection, query, where, getDocs, serverTimestamp, doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
-
-
 import { useUserStore } from "../../userStore";
+
 function List() {
   const [searchTerm, setSearchTerm] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -17,7 +16,7 @@ function List() {
   useEffect(() => {
     const fetchUsers = async () => {
       if (!searchTerm.trim()) {
-        setUsers([]); // Clear users when search is empty
+        setUsers([]);
         return;
       }
 
@@ -44,84 +43,86 @@ function List() {
     fetchUsers();
   }, [searchTerm]);
 
-  const handleInputChange = (e) => {
+  const handleInputChange = async (e) => {
     setSearchTerm(e.target.value.toLowerCase());
-    setIsTyping(e.target.value.length > 0); // Show text only when input is not empty
+    setIsTyping(e.target.value.length > 0);
+
+    if (userDetails?.id) {
+      const userChatRef = doc(db, "userChat", userDetails.id);
+      await updateDoc(userChatRef, {
+        isTyping: e.target.value.length > 0,
+      });
+    }
   };
 
   const handleAddingUser = async (user) => {
     if (!user.id || !userDetails?.id) return;
 
     try {
-        const chatRef = collection(db, "Chats");
-        const userChatRef = collection(db, "userChat");
+      const chatRef = collection(db, "Chats");
+      const userChatRef = collection(db, "userChat");
 
-        // Generate a unique chat ID (alphabetically sorted)
-        const chatId =
-            userDetails.id > user.id
-                ? `${userDetails.id}_${user.id}`
-                : `${user.id}_${userDetails.id}`;
+      const chatId = userDetails.id > user.id
+        ? `${userDetails.id}_${user.id}`
+        : `${user.id}_${userDetails.id}`;
 
-        // **Check if a chat already exists**
-        const chatDocRef = doc(chatRef, chatId);
-        const chatSnap = await getDoc(chatDocRef);
+      const chatDocRef = doc(chatRef, chatId);
+      const chatSnap = await getDoc(chatDocRef);
 
-        if (!chatSnap.exists()) {
-            // Create chat if it doesn't exist
-            await setDoc(chatDocRef, {
-                createdAt: serverTimestamp(),
-                messages: [],
-                users: [userDetails.id, user.id],
-            });
-        }
+      if (!chatSnap.exists()) {
+        await setDoc(chatDocRef, {
+          createdAt: serverTimestamp(),
+          messages: [],
+          users: [userDetails.id, user.id],
+        });
+      }
 
-        // **Update userChat for both users**
-        const userChatSenderRef = doc(userChatRef, userDetails.id);
-        const userChatReceiverRef = doc(userChatRef, user.id);
+      const userChatSenderRef = doc(userChatRef, userDetails.id);
+      const userChatReceiverRef = doc(userChatRef, user.id);
 
-        await setDoc(
-            userChatSenderRef,
-            {
-                chats: {
-                    [chatId]: {
-                        lastMessage: "",
-                        receiverId: user.id,
-                        updatedAt: serverTimestamp(),
-                    },
-                },
+      await setDoc(
+        userChatSenderRef,
+        {
+          chats: {
+            [chatId]: {
+              lastMessage: "",
+              receiverId: user.id,
+              updatedAt: serverTimestamp(),
+              isTyping: false,
             },
-            { merge: true }
-        );
+          },
+        },
+        { merge: true }
+      );
 
-        await setDoc(
-            userChatReceiverRef,
-            {
-                chats: {
-                    [chatId]: {
-                        lastMessage: "",
-                        receiverId: userDetails.id,
-                        updatedAt: serverTimestamp(),
-                    },
-                },
+      await setDoc(
+        userChatReceiverRef,
+        {
+          chats: {
+            [chatId]: {
+              lastMessage: "",
+              receiverId: userDetails.id,
+              updatedAt: serverTimestamp(),
+              isTyping: false,
             },
-            { merge: true }
-        );
+          },
+        },
+        { merge: true }
+      );
 
-        console.log("✅ New chat added:", chatId);
+      console.log("✅ New chat added:", chatId);
     } catch (error) {
-        console.error("🔥 Error adding user to chat:", error);
+      console.error("🔥 Error adding user to chat:", error);
     }
-};
+  };
 
-
-  
   return (
     <>
-      <div className="flex-1  h-screen  pt-10 border-r border-[#e0e0e0] flex flex-col gap-5 items-start p-4 pt-15">
+      <div className="flex-1 h-screen pt-10 border-r border-[#e0e0e0] flex flex-col gap-5 items-start p-4 pt-15">
         <UserInfo />
 
-        <div className={`flex flex-col  border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${isTyping ? "gap-[1rem]" : "h-11"}`}>
-          <div className={ `flex items-center gap-4`}>
+        <div className={`flex flex-col border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${isTyping ? "gap-[1rem]" : "h-11"}`}>
+          <div className="flex items-center gap-4">
             <Search />
             <input
               onChange={handleInputChange}
@@ -131,22 +132,27 @@ function List() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            {isTyping && (<>
-              {users.length > 0 ? (
-                users.map((user) => <div className="flex items-center gap-1.5" key={user.id}>
-                  <img
-                    src={user.photo || "profilepi.jpg" }
-                    alt={user.Firstname}
-                    className="w-8 h-8 rounded-full object-cover"
-                  />
-                  {user.Firstname}<div>
-                <button onClick={() => handleAddingUser(user)} className="p-1 bg-blue-950 rounded text-white" >add user</button>
-              </div></div>)
-              ) : (<>
-                <p>No users found</p></>)}
-            </>)}
-            
-            
+            {isTyping && (
+              users.length > 0 ? (
+                users.map((user) => (
+                  <div className="flex items-center gap-1.5" key={user.id}>
+                    <img
+                      src={user.photo || "profilepi.jpg"}
+                      alt={user.Firstname}
+                      className="w-8 h-8 rounded-full object-cover"
+                    />
+                    {user.Firstname}
+                    <div>
+                      <button onClick={() => handleAddingUser(user)} className="p-1 bg-blue-950 rounded text-white">
+                        add user
+                      </button>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <p>No users found</p>
+              )
+            )}
           </div>
         </div>
         <ChatList />
@@ -154,4 +160,5 @@ function List() {
     </>
   );
 }
+
 export default List;
