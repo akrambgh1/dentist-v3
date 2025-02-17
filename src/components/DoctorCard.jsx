@@ -41,7 +41,7 @@ export default function DoctorCard({ setHideNavbar }) {
         <div className="flex gap-[1rem] max-md:gap-2">
           <img
             className="rounded-full h-19 w-19 object-cover bg-white max-md:h-15 max-md:w-15"
-            src="./public/profilepi.jpg"
+            src="/profilepi.jpg"
             alt="user"
           />
           <div className="flex flex-col justify-center gap-2 max-md:gap-0">
@@ -94,7 +94,7 @@ export default function DoctorCard({ setHideNavbar }) {
             <div className="flex flex-col w-full h-fit items-center gap-1">
               <img
                 className="rounded-full h-24 w-24 object-cover bg-white"
-                src="./public/profilepi.jpg"
+                src="/profilepi.jpg"
                 alt="user"
               />
               <h1 className="text-[1.5rem]">Doctor's Name</h1>
