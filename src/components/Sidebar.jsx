@@ -136,7 +136,7 @@ export default function Sidebar() {
           {isActive && isTextVisible && (
               <button
               onClick={handLogout}
-              className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-red-500 hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+              className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-[#181940] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
             >
               Logout
             </button>

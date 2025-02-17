@@ -37,27 +37,24 @@ export default function Profile() {
             {userDetails ? (
               <div className="w-full h-full rounded-[20px] max-md:w-full">
                 <div className="h-full w-full px-4 max-md:p-4">
-                  {activeTab === "tab1" && <></>}
-
-                  {activeTab === "tab2" && (
+                  {
                     <>
                       <div className="w-full h-full flex flex-col gap-[1.5rem]">
                         <h1 className="text-[1.5rem] font-[500]">My profile</h1>
-                        <div className="flex gap-[1rem] border-[1px] border-[#eff2f1] p-4 rounded-[15px] overflow-hidden max-md:px-2">
+                        <div className="flex gap-[1rem] border-[1px] text-white border-[#eff2f1] p-4 rounded-[15px] overflow-hidden max-md:px-2 max-md:flex-col items-center bg-[url('public/bg.jpg')] bg-center bg-cover bg-no-repeat">
                           <img
                             className="rounded-full h-21 w-21 object-cover"
                             src={userDetails?.photo || "profilepi.jpg"}
                             alt="user"
                           />
 
-                          <div className="flex flex-col">
-                            <h1 className="text-[1.25rem]">
-                              {userDetails?.Firstname || "N/A"}
-                            </h1>
-                            <h1 className="text-[#7994a4] font-[400]">
+                          <div className="flex flex-col max-md:items-center">
+                            <h1 className="text-[1.25rem] max-[400px]:text-[1rem]">
+                              {userDetails?.Firstname || "N/A"}{" "}
                               {userDetails?.Lastname || "N/A"}
                             </h1>
-                            <h1 className="text-[#7994a4]">
+
+                            <h1 className="text-[#dddddd] max-[400px]:text-[.85rem]">
                               {userDetails?.email || "N/A"}
                             </h1>
                           </div>
@@ -85,12 +82,16 @@ export default function Profile() {
 
                             <div className="flex flex-col overflow-hidden">
                               <h1 className="text-[#7994a4]">E-mail address</h1>
-                              <h1 className="">{userDetails?.email || "N/A"}</h1>
+                              <h1 className="">
+                                {userDetails?.email || "N/A"}
+                              </h1>
                             </div>
 
                             <div className="flex flex-col">
                               <h1 className="text-[#7994a4]">Phone Number</h1>
-                              <h1 className="">{userDetails?.phone || "N/A"}</h1>
+                              <h1 className="">
+                                {userDetails?.phone || "N/A"}
+                              </h1>
                             </div>
                           </div>
                         </div>
@@ -113,9 +114,12 @@ export default function Profile() {
                             </div>
                           </div>
                         </div>
+                        <button className="max-md:w-full w-fit text-white bg-red-500 py-2 px-8 rounded-[5px]">
+                          <span>Logout</span>
+                        </button>
                       </div>
                     </>
-                  )}
+                  }
                 </div>
               </div>
             ) : (

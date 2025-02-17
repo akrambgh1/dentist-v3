@@ -102,6 +102,10 @@ export default function DoctorCard({ setHideNavbar }) {
                 EmailAddress@gmail.com
               </h2>
             </div>
+            
+            <div>
+
+            </div>
 
             <div className={`w-[80%] absolute bottom-[0rem] flex flex-col gap-2 transition-all duration-300 ease ${showAppointmentModal ? "-translate-y-full" : "-translate-y-0"}`}>
               <button className="text-white w-full bg-[#181940] rounded-[15px] p-2">

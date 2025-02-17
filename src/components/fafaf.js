@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 const Stepper = ({ step }) => {
   const steps = ["Account", "Details", "Confirm"];
 
