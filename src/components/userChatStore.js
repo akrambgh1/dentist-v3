@@ -4,7 +4,7 @@ import { useUserStore } from './userStore';
 export const useChatStore = create((set) => ({
     chatId: null,
     user: null,
-    iscurrentUserBlocked: false, 
+    isCurrentUserBlocked: false, 
     isReceiverUserBlocked: false, 
     
     changeChat: (chatId, user) => {
@@ -18,23 +18,25 @@ export const useChatStore = create((set) => ({
             return set({
                 chatId,
                 user: null,
-                iscurrentUserBlocked: true, 
+                isCurrentUserBlocked: true, 
                 isReceiverUserBlocked: false, 
             });
         } else if (userDetails.blocked.includes(user.id)) {
             return  set({
                 chatId,
                 user: user,
-                iscurrentUserBlocked: false,
+                isCurrentUserBlocked: false,
                 isReceiverUserBlocked: true,
             });
         } else {
             return   set({
                 chatId,
                 user,
-                iscurrentUserBlocked: false,
+                isCurrentUserBlocked: false,
                 isReceiverUserBlocked: false,
             });
         }
     },
+    
+    
 }));
