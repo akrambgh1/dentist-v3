@@ -24,15 +24,12 @@ function Chat() {
     useEffect(() => {
         if (!chatId || !userDetails) return;
 
-        // Listen to the chat data
         const chatRef = doc(db, "Chats", chatId);
         const unSubChat = onSnapshot(chatRef, async (docSnap) => {
             if (docSnap.exists()) {
                 const chatData = docSnap.data();
-                const newMessages = chatData.messages || [];
-                setMessages(newMessages);
+                setMessages(chatData.messages || []);
 
-                // Get recipient details
                 const recipientId = chatData.users.find(id => id !== userDetails.id);
                 if (recipientId) {
                     const recipientRef = doc(db, "users", recipientId);
@@ -42,38 +39,16 @@ function Chat() {
                     }
                 }
 
-                // Update typing status
-                setIsTyping(chatData.typing === recipientId ? recipientId : null);
+                // Reset `isNewMessage` when user opens the chat
+                const userChatRef = doc(db, "userChat", userDetails.id);
+                await updateDoc(userChatRef, {
+                    [`chats.${chatId}.isNewMessage`]: false
+                });
             }
         });
 
-        const userRef = doc(db, "users", userDetails.id);
-        const recipientId = recipient ? recipient.id : null;
-        const recipientRef = recipientId ? doc(db, "users", recipientId) : null;
-
-        // Listen to block/unblock status
-        const unSubUser = onSnapshot(userRef, (userSnap) => {
-            if (userSnap.exists()) {
-                const userData = userSnap.data();
-                setIsCurrentUserBlocked(userData.blocked?.includes(recipientId));
-            }
-        });
-
-        const unSubRecipient = recipientRef
-            ? onSnapshot(recipientRef, (recipientSnap) => {
-                  if (recipientSnap.exists()) {
-                      const recipientData = recipientSnap.data();
-                      setIsReceiverUserBlocked(recipientData.blocked?.includes(userDetails.id));
-                  }
-              })
-            : null;
-
-        return () => {
-            unSubChat();
-            unSubUser();
-            if (unSubRecipient) unSubRecipient();
-        };
-    }, [chatId, userDetails, recipient]);
+        return () => unSubChat();
+    }, [chatId, userDetails]);
 
     useEffect(() => {
         // Scroll to bottom only if user is at the bottom
@@ -129,41 +104,48 @@ function Chat() {
 
     const sendMessage = async () => {
         if (!messageText.trim()) return;
-
+    
         if (isCurrentUserBlocked || isReceiverUserBlocked) {
             alert("You or the recipient is blocked, cannot send a message.");
             return;
         }
-
+    
         const chatRef = doc(db, "Chats", chatId);
         const newMessage = {
             senderId: userDetails.id,
             text: messageText,
-            timestamp: new Date()
+            timestamp: new Date(),
         };
-
+    
         await updateDoc(chatRef, {
             messages: arrayUnion(newMessage),
             updatedAt: new Date()
         });
-        const chatSnap = await getDoc(chatRef)
+    
+        const chatSnap = await getDoc(chatRef);
         const recipientId = chatSnap.exists() ? chatSnap.data().users.find(id => id !== userDetails.id) : null;
-        
+    
         const userChatsenderRef = doc(db, "userChat", userDetails.id);
-
-        const update = {
-            [`chats.${chatId}.lastMessage`]:messageText,
+        const recipientUserChatRef = recipientId ? doc(db, "userChat", recipientId) : null;
+    
+        const updateSender = {
+            [`chats.${chatId}.lastMessage`]: messageText,
             [`chats.${chatId}.updatedAt`]: new Date(),
-
+        };
+    
+        const updateRecipient = {
+            ...updateSender,
+            [`chats.${chatId}.isNewMessage`]: true, // Mark as unread for recipient
+        };
+    
+        await updateDoc(userChatsenderRef, updateSender);
+        if (recipientUserChatRef) {
+            await updateDoc(recipientUserChatRef, updateRecipient);
         }
-        await updateDoc(userChatsenderRef, update);
-        
-        if (recipientId) {
-            const recipientUserChatRef = doc(db, "userChat", recipientId);
-            await updateDoc(recipientUserChatRef, update);
-        }
+    
         setMessageText("");
     };
+    
 
     const handleTyping = async () => {
         if (isCurrentUserBlocked || isReceiverUserBlocked) return;

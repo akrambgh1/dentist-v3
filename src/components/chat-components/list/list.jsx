@@ -74,6 +74,7 @@ function List() {
           createdAt: serverTimestamp(),
           messages: [],
           users: [userDetails.id, user.id],
+         
         });
       }
 
@@ -89,6 +90,7 @@ function List() {
               receiverId: user.id,
               updatedAt: serverTimestamp(),
               isTyping: false,
+              isNewMessage: false,
             },
           },
         },
@@ -104,6 +106,8 @@ function List() {
               receiverId: userDetails.id,
               updatedAt: serverTimestamp(),
               isTyping: false,
+              isNewMessage: false,
+              
             },
           },
         },
