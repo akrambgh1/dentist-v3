@@ -367,10 +367,7 @@ function Chat() {
             onClick={blockUser}>
             Block Account
                       </button>
-                      <button >
-                              Typing...
-  
-                      </button>
+                      
         </>)}
       </div>
     </div>
