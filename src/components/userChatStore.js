@@ -9,7 +9,7 @@ export const useChatStore = create((set) => ({
     isCurrentUserBlocked: false,
     isReceiverUserBlocked: false,
 
-    changeChat: (chatId, user) => {
+    changeChat: (chatId = null, user = null) => {
         const userDetails = useUserStore.getState().userDetails;
         if (!userDetails) return;
 
@@ -17,8 +17,10 @@ export const useChatStore = create((set) => ({
         const isReceiverUserBlocked = userDetails.blocked.includes(user.id);
 
         set({
-            chatId,
-            user: isCurrentUserBlocked ? null : user, // Null if blocked by recipient
+            
+           
+            chatId:chatId || null,
+            user: isCurrentUserBlocked ? null : user || null, // Null if blocked by recipient
             isCurrentUserBlocked,
             isReceiverUserBlocked,
         });

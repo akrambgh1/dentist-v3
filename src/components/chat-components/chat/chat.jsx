@@ -15,7 +15,7 @@ import { useChatStore } from "../../userChatStore";
 import { useUserStore } from "../../userStore";
 
 function Chat() {
-  const { chatId, updateBlockStatus } = useChatStore();
+  const { chatId, updateBlockStatus , changeChat} = useChatStore();
   const { userDetails } = useUserStore();
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
@@ -23,6 +23,7 @@ function Chat() {
   const { isReceiverUserBlocked } = useChatStore();
   const { isCurrentUserBlocked } = useChatStore();
   const [isTyping, setIsTyping] = useState(false);
+  
 
   const messageEndRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -58,7 +59,7 @@ function Chat() {
         });
       }
     });
-  
+   
     // Real-time listener for `isTyping`
     const unSubTyping = onSnapshot(userChatRef, (userChatSnap) => {
       if (userChatSnap.exists()) {
@@ -89,7 +90,13 @@ function Chat() {
       setIsAtBottom(isAtBottom);
     }
   };
-
+  const handleCloseChat = () => {
+    console.log("Before closing:", { chatId});
+    changeChat(null, null);
+    setTimeout(() => {
+        console.log("After closing:", useChatStore.getState()); // Check if state updates
+    }, 10);
+};
   const formatMessageTime = (timestamp, prevTimestamp) => {
     if (!timestamp) return "Just now";
 
@@ -259,7 +266,8 @@ function Chat() {
 
   return (
     <div className="w-2/3 h-screen flex flex-col">
-      <div className="p-4 flex items-center border-b bg-gray-100">
+      <div className="p-4  flex items-center border-b bg-gray-100">
+      <button onClick={() => handleCloseChat()}>Close Chat</button>
         {isReceiverUserBlocked || isCurrentUserBlocked ? (
           <div className="flex items-center">
             <p className="text-red-500 font-semibold">
@@ -283,49 +291,50 @@ function Chat() {
       </div>
 
       <div
-        className="h-[80%] overflow-y-scroll p-4 flex flex-col scroll-smooth"
-        ref={chatContainerRef}
-        onScroll={handleScroll}>
-        {isReceiverUserBlocked || isCurrentUserBlocked ? (
-          <div className="p-4 text-center">
-            <p className="text-gray-500">
-              You can't send or receive messages because this account is
-              blocked.
-            </p>
+  className="h-[80%] overflow-y-scroll w-full p-4 flex flex-col scroll-smooth"
+  ref={chatContainerRef}
+  onScroll={handleScroll}
+>
+  {isReceiverUserBlocked || isCurrentUserBlocked ? (
+    <div className="p-4 text-center">
+      <p className="text-gray-500">
+        You can't send or receive messages because this account is blocked.
+      </p>
+    </div>
+  ) : (
+    messages.map((msg, index) => {
+      const isMe = msg.senderId === userDetails.id;
+      const prevMessage = messages[index - 1];
+      const messageTime = formatMessageTime(
+        msg.timestamp,
+        prevMessage?.timestamp
+      );
+
+      return (
+        <div
+          key={index}
+          className={`flex flex-col w-full ${
+            isMe ? "items-end" : "items-start"
+          }`}
+        >
+          <div
+            className={`p-3 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
+              isMe ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
+            }`}
+          >
+            {msg.text}
           </div>
-        ) : (
-          messages.map((msg, index) => {
-            const isMe = msg.senderId === userDetails.id;
-            const prevMessage = messages[index - 1];
-            const messageTime = formatMessageTime(
-              msg.timestamp,
-              prevMessage?.timestamp
-            );
+          {messageTime && (
+            <p className="text-xs text-center w-full text-gray-500 mt-1">{messageTime}</p>
+          )}
+        </div>
+      );
+    })
+  )}
 
-            return (
-              <div
-                key={index}
-                className={`flex flex-col items-center ${
-                  isMe ? "justify-end" : "justify-start"
-                }`}>
-                <div
-                  className={`p-3 pe-4 pl-4 flex m-2 rounded-4xl max-w-xs ${
-                    isMe
-                      ? "bg-blue-500 text-white self-end"
-                      : "bg-gray-200 text-black self-start"
-                  }`}>
-                  <p>{msg.text}</p>
-                </div>
-                {messageTime && (
-                  <p className="text-xs text-black mt-1">{messageTime}</p>
-                )}
-              </div>
-            );
-          })
-        )}
+  <div ref={messageEndRef} />
+</div>
 
-        <div ref={messageEndRef} />
-      </div>
 
       {isTyping && (
         <p className="text-gray-500 text-sm px-4">

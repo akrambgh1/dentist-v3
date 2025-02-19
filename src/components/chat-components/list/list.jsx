@@ -3,13 +3,13 @@ import ChatList from "./chat-list";
 import UserInfo from "./userInfo";
 import { Search } from "lucide-react";
 import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, serverTimestamp, doc, setDoc, updateDoc, arrayUnion, getDoc } from "firebase/firestore";
+import { collection, query, where, getDocs, serverTimestamp, doc, setDoc,  getDoc } from "firebase/firestore";
 import { db } from "../../firebase";
 import { useUserStore } from "../../userStore";
 
 function List() {
   const [searchTerm, setSearchTerm] = useState("");
-  const [isTyping, setIsTyping] = useState(false);
+  const [istyping, setIstyping] = useState(false);
   const [users, setUsers] = useState([]);
   const { userDetails } = useUserStore();
 
@@ -17,6 +17,7 @@ function List() {
     const fetchUsers = async () => {
       if (!searchTerm.trim()) {
         setUsers([]);
+       
         return;
       }
 
@@ -39,19 +40,22 @@ function List() {
         console.error("Error searching users:", error);
       }
     };
-
+    
     fetchUsers();
   }, [searchTerm]);
 
   const handleInputChange = async (e) => {
+    setIstyping(true);
     setSearchTerm(e.target.value.toLowerCase());
     
-
+   
     
   };
 
   const handleAddingUser = async (user) => {
     if (!user.id || !userDetails?.id) return;
+    if (user.id === userDetails?.id) return;
+
 
     try {
       const chatRef = collection(db, "Chats");
@@ -120,7 +124,7 @@ function List() {
       <div className="flex-1 h-screen pt-10 border-r border-[#e0e0e0] flex flex-col gap-5 items-start p-4 pt-15">
         <UserInfo />
 
-        <div className={`flex flex-col border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${isTyping ? "gap-[1rem]" : "h-11"}`}>
+        <div className={`flex flex-col border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${istyping ? "gap-[1rem]" : "h-11"}`}>
           <div className="flex items-center gap-4">
             <Search />
             <input
@@ -131,7 +135,7 @@ function List() {
             />
           </div>
           <div className="flex flex-col gap-2">
-            {isTyping && (
+            {istyping && (
               users.length > 0 ? (
                 users.map((user) => (
                   <div className="flex items-center gap-1.5" key={user.id}>
