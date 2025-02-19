@@ -45,14 +45,9 @@ function List() {
 
   const handleInputChange = async (e) => {
     setSearchTerm(e.target.value.toLowerCase());
-    setIsTyping(e.target.value.length > 0);
+    
 
-    if (userDetails?.id) {
-      const userChatRef = doc(db, "userChat", userDetails.id);
-      await updateDoc(userChatRef, {
-        isTyping: e.target.value.length > 0,
-      });
-    }
+    
   };
 
   const handleAddingUser = async (user) => {
