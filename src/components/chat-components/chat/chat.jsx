@@ -1,13 +1,17 @@
+/* eslint-disable react/no-unescaped-entities */
+/* eslint-disable react-hooks/rules-of-hooks */
 import {
   onSnapshot,
   doc,
   getDoc,
   updateDoc,
   arrayUnion,
-    arrayRemove,
-  
+  arrayRemove
 } from "firebase/firestore";
 
+import { LockKeyhole } from 'lucide-react';
+import { LockKeyholeOpen } from 'lucide-react';
+import { ArrowLeft } from "lucide-react";
 
 import { useEffect, useState, useRef } from "react";
 import { db } from "../../firebase";
@@ -15,7 +19,7 @@ import { useChatStore } from "../../userChatStore";
 import { useUserStore } from "../../userStore";
 
 function Chat() {
-  const { chatId, updateBlockStatus , changeChat} = useChatStore();
+  const { chatId, updateBlockStatus, changeChat } = useChatStore();
   const { userDetails } = useUserStore();
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
@@ -23,7 +27,6 @@ function Chat() {
   const { isReceiverUserBlocked } = useChatStore();
   const { isCurrentUserBlocked } = useChatStore();
   const [isTyping, setIsTyping] = useState(false);
-  
 
   const messageEndRef = useRef(null);
   const chatContainerRef = useRef(null);
@@ -34,16 +37,16 @@ function Chat() {
 
   useEffect(() => {
     if (!chatId || !userDetails) return;
-  
+
     const chatRef = doc(db, "Chats", chatId);
     const userChatRef = doc(db, "userChat", userDetails.id);
-  
+
     // Listener for chat messages and recipient
     const unSubChat = onSnapshot(chatRef, async (docSnap) => {
       if (docSnap.exists()) {
         const chatData = docSnap.data();
         setMessages(chatData.messages || []);
-  
+
         const recipientId = chatData.users.find((id) => id !== userDetails.id);
         if (recipientId) {
           const recipientRef = doc(db, "users", recipientId);
@@ -52,22 +55,22 @@ function Chat() {
             setRecipient(recipientSnap.data());
           }
         }
-  
+
         // Reset `isNewMessage` when user opens the chat
         await updateDoc(userChatRef, {
-          [`chats.${chatId}.isNewMessage`]: false,
+          [`chats.${chatId}.isNewMessage`]: false
         });
       }
     });
-   
+
     // Real-time listener for `isTyping`
     const unSubTyping = onSnapshot(userChatRef, (userChatSnap) => {
       if (userChatSnap.exists()) {
-        const isTyping = userChatSnap.data().chats?.[chatId]?.isTyping ;
-      setIsTyping(isTyping);
+        const isTyping = userChatSnap.data().chats?.[chatId]?.isTyping;
+        setIsTyping(isTyping);
       }
     });
-  
+
     return () => {
       unSubChat();
       unSubTyping();
@@ -91,12 +94,12 @@ function Chat() {
     }
   };
   const handleCloseChat = () => {
-    console.log("Before closing:", { chatId});
+    console.log("Before closing:", { chatId });
     changeChat(null, null);
     setTimeout(() => {
-        console.log("After closing:", useChatStore.getState()); // Check if state updates
+      console.log("After closing:", useChatStore.getState()); // Check if state updates
     }, 10);
-};
+  };
   const formatMessageTime = (timestamp, prevTimestamp) => {
     if (!timestamp) return "Just now";
 
@@ -132,7 +135,7 @@ function Chat() {
 
     if (messageDate.getFullYear() === now.getFullYear()) {
       return `${messageDate.toLocaleDateString("en-GB", {
-        weekday: "long",
+        weekday: "long"
       })}, ${messageDate.toLocaleTimeString("en-GB", options)}`;
     }
 
@@ -141,7 +144,7 @@ function Chat() {
       month: "2-digit",
       year: "numeric",
       hour: "2-digit",
-      minute: "2-digit",
+      minute: "2-digit"
     });
   };
 
@@ -157,12 +160,12 @@ function Chat() {
     const newMessage = {
       senderId: userDetails.id,
       text: messageText,
-      timestamp: new Date(),
+      timestamp: new Date()
     };
 
     await updateDoc(chatRef, {
       messages: arrayUnion(newMessage),
-      updatedAt: new Date(),
+      updatedAt: new Date()
     });
 
     const chatSnap = await getDoc(chatRef);
@@ -177,12 +180,12 @@ function Chat() {
 
     const updateSender = {
       [`chats.${chatId}.lastMessage`]: messageText,
-      [`chats.${chatId}.updatedAt`]: new Date(),
+      [`chats.${chatId}.updatedAt`]: new Date()
     };
 
     const updateRecipient = {
       ...updateSender,
-      [`chats.${chatId}.isNewMessage`]: true, // Mark as unread for recipient
+      [`chats.${chatId}.isNewMessage`]: true // Mark as unread for recipient
     };
 
     await updateDoc(userChatsenderRef, updateSender);
@@ -193,9 +196,6 @@ function Chat() {
     setMessageText("");
   };
 
-  
- 
-
   const typingTimerRef = useRef(null);
 
   const handleTyping = async () => {
@@ -205,9 +205,8 @@ function Chat() {
 
     // Set isTyping to true only if it was false before
     if (!isTyping) {
-      
       await updateDoc(userChatRef, {
-        [`chats.${chatId}.isTyping`]: true,
+        [`chats.${chatId}.isTyping`]: true
       });
     }
 
@@ -218,7 +217,7 @@ function Chat() {
     typingTimerRef.current = setTimeout(async () => {
       setIsTyping(false);
       await updateDoc(userChatRef, {
-        [`chats.${chatId}.isTyping`]: false,
+        [`chats.${chatId}.isTyping`]: false
       });
     }, 1000);
   };
@@ -228,25 +227,16 @@ function Chat() {
       if (typingTimerRef.current) clearTimeout(typingTimerRef.current);
     };
   }, []);
-    
 
-  
-    
-  
-   
-  
+  // Pass true or false dynamically
 
- // Pass true or false dynamically
-
-
-  
   const blockUser = async () => {
     await updateDoc(doc(db, "users", userDetails.id), {
-      blocked: arrayUnion(recipient.id),
+      blocked: arrayUnion(recipient.id)
     });
     console.log("blockUser");
     await updateDoc(doc(db, "users", recipient.id), {
-      blocked: arrayUnion(userDetails.id),
+      blocked: arrayUnion(userDetails.id)
     });
 
     updateBlockStatus(recipient.id);
@@ -254,11 +244,11 @@ function Chat() {
 
   const unblockUser = async () => {
     await updateDoc(doc(db, "users", userDetails.id), {
-      blocked: arrayRemove(recipient.id),
+      blocked: arrayRemove(recipient.id)
     });
 
     await updateDoc(doc(db, "users", recipient.id), {
-      blocked: arrayRemove(userDetails.id),
+      blocked: arrayRemove(userDetails.id)
     });
 
     updateBlockStatus(recipient.id);
@@ -266,75 +256,105 @@ function Chat() {
 
   return (
     <div className="w-2/3 h-screen flex flex-col">
-      <div className="p-4  flex items-center border-b bg-gray-100">
-      <button onClick={() => handleCloseChat()}>Close Chat</button>
+      <div className="p-4 flex items-center justify-between">
+        <div className="flex items-center gap-[1rem]">
+          <ArrowLeft onClick={() => handleCloseChat()}>Close Chat</ArrowLeft>
+          {isReceiverUserBlocked || isCurrentUserBlocked ? (
+            <div className="flex items-center">
+              <p className="text-red-500 font-semibold">
+                This account is blocked
+              </p>
+            </div>
+          ) : recipient ? (
+            <>
+            <div className="flex items-center justify-center">
+              <img
+                src={recipient.photo || "/profilepi.jpg"}
+                className="w-10 h-10 rounded-full mr-3"
+                alt="Profile"
+              />
+              <h1 className="text-lg font-semibold">
+                {recipient.Firstname || "Unknown"}
+              </h1>
+            </div>
+              
+            </>
+          ) : (
+            <p className="text-gray-500">Loading...</p>
+          )}
+        </div>
+
         {isReceiverUserBlocked || isCurrentUserBlocked ? (
-          <div className="flex items-center">
-            <p className="text-red-500 font-semibold">
-              This account is blocked
-            </p>
+          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer"> 
+          <LockKeyholeOpen
+            className="text-white"
+            onClick={unblockUser}
+          >
+            Unblock Account
+          </LockKeyholeOpen>
           </div>
-        ) : recipient ? (
-          <>
-            <img
-              src={recipient.photo || "/profilepi.jpg"}
-              className="w-10 h-10 rounded-full mr-3"
-              alt="Profile"
-            />
-            <h1 className="text-lg font-semibold">
-              {recipient.Firstname || "Unknown"}
-            </h1>
-          </>
         ) : (
-          <p className="text-gray-500">Loading...</p>
+          <>
+          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
+            <LockKeyhole
+              className="text-white "
+              onClick={blockUser}
+            >
+              Block Account
+            </LockKeyhole>
+          </div>
+            
+          </>
         )}
       </div>
 
       <div
-  className="h-[80%] overflow-y-scroll w-full p-4 flex flex-col scroll-smooth"
-  ref={chatContainerRef}
-  onScroll={handleScroll}
->
-  {isReceiverUserBlocked || isCurrentUserBlocked ? (
-    <div className="p-4 text-center">
-      <p className="text-gray-500">
-        You can't send or receive messages because this account is blocked.
-      </p>
-    </div>
-  ) : (
-    messages.map((msg, index) => {
-      const isMe = msg.senderId === userDetails.id;
-      const prevMessage = messages[index - 1];
-      const messageTime = formatMessageTime(
-        msg.timestamp,
-        prevMessage?.timestamp
-      );
-
-      return (
-        <div
-          key={index}
-          className={`flex flex-col w-full ${
-            isMe ? "items-end" : "items-start"
-          }`}
-        >
-          <div
-            className={`p-3 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
-              isMe ? "bg-blue-500 text-white" : "bg-gray-200 text-black"
-            }`}
-          >
-            {msg.text}
+        className="h-[100%] w-full p-4 flex flex-col scroll-smooth border border-[#eee] rounded-[20px] overflow-auto scrollbar-none"
+        ref={chatContainerRef}
+        onScroll={handleScroll}
+      >
+        {isReceiverUserBlocked || isCurrentUserBlocked ? (
+          <div className="p-4 text-center">
+            <p className="text-gray-500">
+              You can't send or receive messages because this account is
+              blocked.
+            </p>
           </div>
-          {messageTime && (
-            <p className="text-xs text-center w-full text-gray-500 mt-1">{messageTime}</p>
-          )}
-        </div>
-      );
-    })
-  )}
+        ) : (
+          messages.map((msg, index) => {
+            const isMe = msg.senderId === userDetails.id;
+            const prevMessage = messages[index - 1];
+            const messageTime = formatMessageTime(
+              msg.timestamp,
+              prevMessage?.timestamp
+            );
 
-  <div ref={messageEndRef} />
-</div>
+            return (
+              <div
+                key={index}
+                className={`flex flex-col w-full ${
+                  isMe ? "items-end" : "items-start"
+                }`}
+              >
+                <div
+                  className={`p-3 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
+                    isMe ? "bg-[#181940] text-white" : "bg-gray-200 text-black"
+                  }`}
+                >
+                  {msg.text}
+                </div>
+                {messageTime && (
+                  <p className="text-xs text-center w-full text-gray-500 mt-1">
+                    {messageTime}
+                  </p>
+                )}
+              </div>
+            );
+          })
+        )}
 
+        <div ref={messageEndRef} />
+      </div>
 
       {isTyping && (
         <p className="text-gray-500 text-sm px-4">
@@ -342,42 +362,27 @@ function Chat() {
         </p>
       )}
 
-      <div className="p-4 border-t bg-white flex items-center">
+      <div className="p-4 bg-white flex items-center">
         <input
           type="text"
-          className="flex-1 p-2 border rounded-lg"
+          className="flex-1 p-2 outline-none"
           placeholder="Type a message..."
           value={messageText}
           onChange={(e) => {
             setMessageText(e.target.value);
-          
-           handleTyping();
-        }}
-       
-                  
+
+            handleTyping();
+          }}
           onKeyDown={(e) => e.key === "Enter" && sendMessage()}
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         />
         <button
-          className="ml-2 p-2 bg-blue-500 text-white rounded-lg"
+          className="ml-2 px-8 p-2 bg-[#181940] text-white rounded-lg"
           onClick={sendMessage}
-          disabled={isCurrentUserBlocked || isReceiverUserBlocked}>
+          disabled={isCurrentUserBlocked || isReceiverUserBlocked}
+        >
           Send
         </button>
-        {isReceiverUserBlocked || isCurrentUserBlocked ? (
-          <button
-            className="ml-2 p-2 bg-red-500 text-white rounded-lg"
-            onClick={unblockUser}>
-            Unblock Account
-          </button>
-        ) : (<>
-          <button
-            className="ml-2 p-2 bg-red-500 text-white rounded-lg"
-            onClick={blockUser}>
-            Block Account
-                      </button>
-                      
-        </>)}
       </div>
     </div>
   );

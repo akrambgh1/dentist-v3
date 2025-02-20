@@ -36,7 +36,7 @@ useEffect(() => {
         <div className="w-auto">
           <Sidebar></Sidebar>
         </div>
-        <div className="flex justify-center items-center w-full">
+        <div className="flex w-full gap-[1rem]">
           <List />
           {chatId && (
             <>
