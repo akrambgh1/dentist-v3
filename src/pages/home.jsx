@@ -22,8 +22,8 @@ export default function Home() {
         <section className="h-[100vh] flex-1 overflow-y-scroll">
           <section className="flex flex-col min-h-screen gap-[2rem] mb-[7rem] items-center pt-[3rem]">
             <div className="flex flex-col w-[100%] items-center justify-center gap-[3rem] pl-[4rem] pr-[2rem] max-md:px-4 max-xl:pl-[2rem]">
-              <div className="flex flex-col gap-[1rem] w-full mb-[3rem] items-center justify-center h-[50vh] bg-[#f5f5dc] rounded-[20px] px-[2rem] text-center max-md:h-auto max-md:py-[2rem] max-md:px-4">
-                <h1 className="text-[4rem] text-[#181940] font-[500] max-xl:text-[2.5rem] max-md:text-[1.75rem]">
+              <div className="flex flex-col gap-[1rem] w-full mb-[3rem] items-center justify-center h-[55vh] py-4 bg-[#f5f5dc] rounded-[20px] px-[2rem] text-center max-md:h-auto max-md:py-[2rem] max-md:px-4">
+                <h1 className="text-[4rem] xl:w-[60%] text-[#181940] font-[500] max-xl:text-[2.5rem] max-md:text-[1.75rem]">
                   Connecting Patients with Top Dentists Effortlessly.
                 </h1>
                 <h2 className="text-[#777] text-[1.75rem] max-xl:text-[1.25rem] max-md:text-[.95rem]">
@@ -32,7 +32,7 @@ export default function Home() {
                 </h2>
                 {loggedIn ? (<>
                 
-                  <h1 className="text-6xl text-[#181940]">welcome back, <span>{userDetails?.Firstname}</span></h1>
+                  {/* <h1 className="text-6xl text-[#181940]">welcome back, <span>{userDetails?.Firstname}</span></h1> */}
                   </>) : (<Link to="/Register">
                     <Button2 text={"Sign up"} />
                   </Link>)}
