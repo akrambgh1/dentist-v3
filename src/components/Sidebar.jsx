@@ -114,7 +114,7 @@ export default function Sidebar() {
         {loggedIn ? (<>
         <div className="flex flex-col gap-[2rem]">
           <div className="flex w-full left-0 gap-[.5rem] items-center justify-between">
-              <div className={`w-[2.5rem] h-[2.5rem] border-2  ${isActive && isTextVisible ?
+              {/* <div className={`w-[2.5rem] h-[2.5rem] border-2  ${isActive && isTextVisible ?
               "bottom-0"
              : "bottom-[2.75rem]"}  
              relative border-[#181940]  rounded-[50%] bg-[#181940]`}><img className="rounded-[50%]" src={userDetails?.photo|| "profilepi.jpg" } alt="" /></div>
@@ -129,7 +129,7 @@ export default function Sidebar() {
                 {userDetails?.email }
               </h2>
             )}
-        </div>
+        </div> */}
           
         </div><div>
   
