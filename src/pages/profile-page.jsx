@@ -41,7 +41,7 @@ export default function Profile() {
                     <>
                       <div className="w-full h-full flex flex-col gap-[1.5rem]">
                         <h1 className="text-[1.5rem] font-[500]">My profile</h1>
-                        <div className="flex gap-[1rem] border-[1px] text-white border-[#eff2f1] p-4 rounded-[15px] overflow-hidden max-md:px-2 max-md:flex-col items-center bg-[url('/bg.jpg')] bg-center bg-cover bg-no-repeat">
+                        <div className="flex gap-[1rem] border-[1px] text-white border-[#eff2f1] p-4 rounded-[15px] max-md:px-2 max-md:flex-col items-center bg-[url('/bg.jpg')] bg-center bg-cover bg-no-repeat">
                           <img
                             className="rounded-full h-21 w-21 object-cover"
                             src={userDetails?.photo || "profilepi.jpg"}

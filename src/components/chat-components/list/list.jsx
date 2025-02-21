@@ -121,7 +121,7 @@ function List() {
 
   return (
     <>
-      <div className="h-screen flex flex-col gap-5 items-start p-4 pt-15 w-[40%] border-r border-r-[#f7f7f7]">
+      <div className="h-screen flex flex-col gap-5 items-start p-4 pt-15 w-[40%] border-r border-r-[#f7f7f7] max-md:w-full">
         <UserInfo />
 
         <div className={`flex flex-col border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${istyping ? "gap-[1rem]" : "h-11"}`}>

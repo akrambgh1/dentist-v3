@@ -122,7 +122,7 @@ const ChatList = () => {
     <div className="w-full gap-5 flex flex-col overflow-auto scrollbar-none p-2">
       {chats.length === 0 ? (
         <>
-          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
             <div>
               <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
             </div>
@@ -131,7 +131,7 @@ const ChatList = () => {
               <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
             </div>
           </div>
-          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
             <div>
               <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
             </div>
@@ -140,7 +140,7 @@ const ChatList = () => {
               <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
             </div>
           </div>
-          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
             <div>
               <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
             </div>
@@ -149,7 +149,7 @@ const ChatList = () => {
               <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
             </div>
           </div>
-          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
             <div>
               <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
             </div>
@@ -158,7 +158,7 @@ const ChatList = () => {
               <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
             </div>
           </div>
-          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
             <div>
               <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
             </div>
@@ -167,7 +167,7 @@ const ChatList = () => {
               <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
             </div>
           </div>
-          <div className=" w-full rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 flex items-center gap-3">
+          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
             <div>
               <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
             </div>
@@ -182,7 +182,7 @@ const ChatList = () => {
           <div
             key={chat.chatId}
             onClick={() => changeChat(chat.chatId, chat.user)}
-            className={`rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 cursor-pointer 
+            className={`rounded-2xl flex border border-gray-200 w-full py-3 px-4 gap-4 cursor-pointer
               ${chatId === chat.chatId ? "bg-gray-200" : "hover:bg-gray-100"} 
               ${chat.isNewMessage ? "bg-blue-200" : "bg-gray-200"}`} // Highlight new messages
           >

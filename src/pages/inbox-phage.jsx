@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import Sidebar from "../components/Sidebar";
 import List from "../components/chat-components/list/list";
 import Chat from "../components/chat-components/chat/chat";
@@ -11,8 +12,6 @@ import { onAuthStateChanged } from "firebase/auth";
 
 export default function Inbox() {
   const { chatId } = useChatStore();
-
-
   const { fetchUsersInfo } = useUserStore();
 
 
