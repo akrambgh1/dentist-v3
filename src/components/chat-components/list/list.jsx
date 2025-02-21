@@ -124,8 +124,8 @@ function List() {
       <div className="h-screen flex flex-col gap-5 items-start p-4 pt-15 w-[40%] border-r border-r-[#f7f7f7] max-md:w-full">
         <UserInfo />
 
-        <div className={`flex flex-col border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem] ${istyping ? "gap-[1rem]" : "h-11"}`}>
-          <div className="flex items-center gap-4">
+        <div className={`flex flex-col border-[#eee] border-[1px] w-[100%] py-2 pl-[.5rem] pr-[1rem] rounded-[15px] ${istyping ? "" : "h-11"}`}>
+          <div className={`flex items-center gap-2 pb-2  ${istyping ? "border-b border-b-[#eee]" : ""}`}>
             <Search />
             <input
               onChange={handleInputChange}
@@ -134,17 +134,20 @@ function List() {
               className="outline-none w-full"
             />
           </div>
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col ">
             {istyping && (
               users.length > 0 ? (
                 users.map((user) => (
-                  <div className="flex items-center gap-1.5" key={user.id}>
-                    <img
+                  <div className="flex items-center gap-1.5 justify-between mt-4" key={user.id}>
+                    <div className="flex items-center gap-1.5">
+                      <img
                       src={user.photo || "profilepi.jpg"}
                       alt={user.Firstname}
                       className="w-8 h-8 rounded-full object-cover"
                     />
-                    {user.Firstname}
+                    <h1 className="text-[1.25rem] font-[600]">{user.Firstname}</h1>
+                    </div>
+                    
                     <div>
                       <button onClick={() => handleAddingUser(user)} className="p-1 bg-blue-950 rounded text-white">
                         add user
@@ -153,7 +156,7 @@ function List() {
                   </div>
                 ))
               ) : (
-                <p>No users found</p>
+                <p className="mt-2 pl-2">No users found</p>
               )
             )}
           </div>
