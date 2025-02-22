@@ -156,7 +156,7 @@ function List() {
                   </div>
                 ))
               ) : (
-                <p className="mt-2 pl-2">No users found</p>
+                <p className={`mt-2 pl-2 ${istyping ? "" : ""}`}>No users found</p>
               )
             )}
           </div>

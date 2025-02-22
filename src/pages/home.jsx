@@ -71,7 +71,7 @@ export default function Home() {
                 </div>
 
                 <div className="flex flex-col gap-[3rem] mt-[5rem] items-center justify-center">
-                    <h1 className="text-[3rem] text-[#181940] font-[500] max-xl:text-[2rem] max-md:text-[1.25rem] text-center">A doctor? Explore Dentist for caregivers and enhance your everyday experience.</h1>
+                    <h1 className="text-[3rem] text-[#181940] font-[500] max-xl:text-[2rem] max-md:text-[1.25rem] text-center tracking-tight">A doctor? Explore Dentist for caregivers and enhance your everyday experience.</h1>
                     <ul className="flex flex-col gap-[1rem]">
                       <li className="text-[1.25rem] font-[500] p-4 bg-[#eee] rounded-[10px] border-l-[10px] border-[#4749b9] max-xl:text-[1rem]">1 - Experience a more efficient and fulfilling work environment.</li>
                       <li className="text-[1.25rem] font-[500] p-4 bg-[#eee] rounded-[10px] border-l-[10px] border-[#4749b9] max-xl:text-[1rem]">2 - Boost your practice’s growth and profitability.</li>

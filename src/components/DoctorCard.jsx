@@ -4,6 +4,7 @@
 import React, { useState, useEffect } from "react";
 import { Star } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
+import Calendar from "./ui/calendar";
 
 export default function DoctorCard({ setHideNavbar }) {
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -87,10 +88,37 @@ export default function DoctorCard({ setHideNavbar }) {
       {/* Mobile Modal */}
       {isMobile && (
         <div
-          className={`absolute bottom-0 overflow-y-scroll left-0 w-full transition-all duration-300 ease flex justify-center bg-[#ffffff] shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded-t-[30px] bg-opacity-50 
-        ${showAppointmentModal ? "h-[80%] " : "h-0"}`}
+          className={`absolute bottom-0 left-0 overflow-y-scroll pb-4 z-[9999] w-full transition-all duration-200 ease-in-out flex justify-center bg-[#ffffff] shadow-[0px_2px_3px_-1px_rgba(0,0,0,0.1),0px_1px_0px_0px_rgba(25,28,33,0.02),0px_0px_0px_1px_rgba(25,28,33,0.08)] rounded-t-[30px] 
+        ${showAppointmentModal ? "h-[80%] flex" : "h-0"}`}
         >
-          <div className="w-full h-full flex flex-col items-center py-5">
+          <div className="w-full h-full flex flex-col items-center py-5 gap-[1rem]">
+            <div className="flex flex-col w-full h-fit items-center gap-1">
+              <img
+                className="rounded-full h-24 w-24 object-cover bg-white"
+                src="/profilepi.jpg"
+                alt="user"
+              />
+              <h1 className="text-[1.5rem]">Doctor's Name</h1>
+              <h2 className="text-[1rem] text-[#8d8d8d]">
+                EmailAddress@gmail.com
+              </h2>
+            </div>
+            <div className="w-full flex justify-center">
+              <Calendar className={"w-[90%]"} rowClassName={""} HeadRowClassName={""}></Calendar>
+            </div>
+
+            <div className="flex flex-col w-full h-fit items-center gap-1">
+              <img
+                className="rounded-full h-24 w-24 object-cover bg-white"
+                src="/profilepi.jpg"
+                alt="user"
+              />
+              <h1 className="text-[1.5rem]">Doctor's Name</h1>
+              <h2 className="text-[1rem] text-[#8d8d8d]">
+                EmailAddress@gmail.com
+              </h2>
+            </div>
+
             <div className="flex flex-col w-full h-fit items-center gap-1">
               <img
                 className="rounded-full h-24 w-24 object-cover bg-white"
@@ -103,13 +131,17 @@ export default function DoctorCard({ setHideNavbar }) {
               </h2>
             </div>
             
+            
             <div>
 
             </div>
 
-            <div className={`w-[80%] absolute bottom-[0rem] flex flex-col gap-2 transition-all duration-300 ease ${showAppointmentModal ? "-translate-y-full" : "-translate-y-0"}`}>
-              <button className="text-white w-full bg-[#181940] rounded-[15px] p-2">
+            <div className={`w-[95%] flex gap-2 transition-all duration-300 ease ${showAppointmentModal ? "" : "-translate-y-0"}`}>
+              <button className="text-white w-[30%] bg-[#181940] rounded-[5px] p-2">
                 Chat
+              </button>
+              <button className="text-white w-[70%] bg-[#181940] rounded-[5px] p-2">
+                make an appointment
               </button>
             </div>
             <div
