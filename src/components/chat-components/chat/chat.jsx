@@ -259,7 +259,7 @@ function Chat() {
 
   return (
     <>
-    <div className="w-2/3 relative h-screen flex flex-col max-md:absolute z-30 max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400">
+    <div className="w-2/3 relative h-screen max-md:h-dvh flex flex-col max-md:absolute z-30 max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400">
       <div className="p-4 flex items-center justify-between max-md:fixed max-md:w-full max-md:top-0 max-md:bg-white">
         <div className="flex items-center gap-[1rem]">
           <ArrowLeft onClick={() => handleCloseChat()}>Close Chat</ArrowLeft>
