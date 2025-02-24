@@ -149,33 +149,7 @@ const ChatList = () => {
               <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
             </div>
           </div>
-          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
-            <div>
-              <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
-              <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
-            </div>
-          </div>
-          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
-            <div>
-              <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
-              <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
-            </div>
-          </div>
-          <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
-            <div>
-              <Skeleton className="flex rounded-full bg-gray-500 w-12 h-12 animate-pulse" />
-            </div>
-            <div className="w-full flex flex-col gap-2">
-              <Skeleton className="h-3 w-3/5 bg-gray-500 rounded-lg animate-pulse" />
-              <Skeleton className="h-3 w-4/5 bg-gray-500 rounded-lg animate-pulse" />
-            </div>
-          </div>
+
         </>
       ) : (
         chats?.map((chat) => (

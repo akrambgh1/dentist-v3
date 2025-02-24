@@ -51,12 +51,12 @@ export default function Nav() {
           <Calendar stroke="#111238" size={21} />
           <h1 className="text-[#111238] font-[500]">Appt</h1>
         </div>
-
+        <Link to="/Inbox">
         <div className="flex flex-col gap-[.25rem]  items-center justify-center">
           <MessageCircle stroke="#111238" size={21} />
           <h1 className="text-[#111238] font-[500]">Chat</h1>
         </div>
-
+        </Link>
         
           <div onClick={handleProNav} className="flex flex-col gap-[.25rem]  items-center justify-center">
             <UserRound stroke="#111238" size={21} />

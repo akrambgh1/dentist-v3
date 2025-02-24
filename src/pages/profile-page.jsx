@@ -13,6 +13,7 @@ export default function Profile() {
   const [activeTab, setActiveTab] = useState("tab2");
 
   const navigate = useNavigate();
+
   async function handLogout() {
     try {
       await auth.signOut();
@@ -114,7 +115,7 @@ export default function Profile() {
                             </div>
                           </div>
                         </div>
-                        <button className="max-md:w-full w-fit text-white bg-red-500 py-2 px-8 rounded-[5px]">
+                        <button onClick={handLogout} className="max-md:w-full w-fit text-white bg-red-500 py-2 px-8 rounded-[5px]">
                           <span>Logout</span>
                         </button>
                       </div>
@@ -125,7 +126,9 @@ export default function Profile() {
             ) : (
               <section className="w-full h-[80dvh] flex items-center justify-center">
                 <BarLoader color="#134cbc" height={4} width={150} />
+                
               </section>
+              
             )}
           </section>
         </section>

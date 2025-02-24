@@ -9,14 +9,15 @@ import {
   arrayRemove
 } from "firebase/firestore";
 
-import { LockKeyhole } from 'lucide-react';
-import { LockKeyholeOpen } from 'lucide-react';
+import { LockKeyhole } from "lucide-react";
+import { LockKeyholeOpen } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
 
 import { useEffect, useState, useRef } from "react";
 import { db } from "../../firebase";
 import { useChatStore } from "../../userChatStore";
 import { useUserStore } from "../../userStore";
+import { SendHorizontal  } from 'lucide-react';
 
 function Chat() {
   const { chatId, updateBlockStatus, changeChat } = useChatStore();
@@ -254,8 +255,10 @@ function Chat() {
     updateBlockStatus(recipient.id);
   };
 
+
+
   return (
-    <div className="w-2/3 h-screen flex flex-col">
+    <div className="w-2/3 h-screen flex flex-col max-md:absolute max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400">
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-[1rem]">
           <ArrowLeft onClick={() => handleCloseChat()}>Close Chat</ArrowLeft>
@@ -267,17 +270,16 @@ function Chat() {
             </div>
           ) : recipient ? (
             <>
-            <div className="flex items-center justify-center">
-              <img
-                src={recipient.photo || "/profilepi.jpg"}
-                className="w-10 h-10 rounded-full mr-3"
-                alt="Profile"
-              />
-              <h1 className="text-lg font-semibold">
-                {recipient.Firstname || "Unknown"}
-              </h1>
-            </div>
-              
+              <div className="flex items-center justify-center">
+                <img
+                  src={recipient.photo || "/profilepi.jpg"}
+                  className="w-10 h-10 rounded-full mr-3"
+                  alt="Profile"
+                />
+                <h1 className="text-lg font-semibold">
+                  {recipient.Firstname || "Unknown"}
+                </h1>
+              </div>
             </>
           ) : (
             <p className="text-gray-500">Loading...</p>
@@ -285,25 +287,18 @@ function Chat() {
         </div>
 
         {isReceiverUserBlocked || isCurrentUserBlocked ? (
-          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer"> 
-          <LockKeyholeOpen
-            className="text-white"
-            onClick={unblockUser}
-          >
-            Unblock Account
-          </LockKeyholeOpen>
+          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
+            <LockKeyholeOpen className="text-white" onClick={unblockUser}>
+              Unblock Account
+            </LockKeyholeOpen>
           </div>
         ) : (
           <>
-          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-            <LockKeyhole
-              className="text-white "
-              onClick={blockUser}
-            >
-              Block Account
-            </LockKeyhole>
-          </div>
-            
+            <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
+              <LockKeyhole className="text-white " onClick={blockUser}>
+                Block Account
+              </LockKeyhole>
+            </div>
           </>
         )}
       </div>
@@ -337,7 +332,7 @@ function Chat() {
                 }`}
               >
                 <div
-                  className={`p-3 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
+                  className={`px-5 py-2 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
                     isMe ? "bg-[#181940] text-white" : "bg-gray-200 text-black"
                   }`}
                 >
@@ -377,11 +372,11 @@ function Chat() {
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         />
         <button
-          className="ml-2 px-8 p-2 bg-[#181940] text-white rounded-lg"
+          className="ml-2 px-8 max-md:px-2 p-2 bg-[#181940] text-white rounded-lg"
           onClick={sendMessage}
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         >
-          Send
+          <SendHorizontal ></SendHorizontal >
         </button>
       </div>
     </div>
