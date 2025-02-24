@@ -6,9 +6,11 @@ import { CalendarForm } from "../components/ui/CalendarForm";
 import DoctorCard from "../components/DoctorCard";
 import Nav from "../components/navbar";
 import { useState, useEffect } from "react";
-import { collection, query, where, getDocs, } from "firebase/firestore";
-
+import { collection, query, where, getDocs,doc ,setDoc, getDoc, serverTimestamp} from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
+import { useChatStore } from "../components/userChatStore";
 import { db } from "../components/firebase";
+import { useUserStore } from "../components/userStore";
 
 export default function SearchPage() {
   const [date, setDate] = React.useState(new Date());
@@ -16,21 +18,21 @@ export default function SearchPage() {
   const [searchTerm, setSearchTerm] = useState("");
   const [istyping, setIstyping] = useState(false);
   const [users, setUsers] = useState([]);
+  const { userDetails } = useUserStore();
+  const { changeChat, } = useChatStore();
+
+  const navigate = useNavigate();
+
    useEffect(() => {
       const fetchUsers = async () => {
-        if (!searchTerm.trim()) {
-          setUsers([]);
-         
-          return;
-        }
+      
   
         try {
           const usersRef = collection(db, "users");
           const q = query(
             usersRef,
            
-            where("lowercasedName", ">=", searchTerm),
-            where("lowercasedName", "<=", searchTerm + "\uf8ff"),
+           
             where("Usertype", "==", "dentist")
           );
   
@@ -48,13 +50,88 @@ export default function SearchPage() {
       };
       
       fetchUsers();
-    }, [searchTerm,]);
+    }, []);
     const handleInputChange = async (e) => {
       setIstyping(true);
       setSearchTerm(e.target.value.toLowerCase());
       
       
       
+  };
+   const handleAddingUser = async (user) => {
+      if (!user.id || !userDetails?.id) return;
+      if (user.id === userDetails?.id) return;
+  
+  
+      try {
+        const chatRef = collection(db, "Chats");
+        const userChatRef = collection(db, "userChat");
+  
+        const chatId = userDetails.id > user.id
+          ? `${userDetails.id}_${user.id}`
+          : `${user.id}_${userDetails.id}`;
+  
+        const chatDocRef = doc(chatRef, chatId);
+        const chatSnap = await getDoc(chatDocRef);
+  if (chatSnap.exists()) {
+    changeChat(chatId, user);
+        
+        }
+        if (!chatSnap.exists()) {
+          await setDoc(chatDocRef, {
+            createdAt: serverTimestamp(),
+            messages: [],
+            users: [userDetails.id, user.id],
+           
+          });
+        
+        
+  
+        const userChatSenderRef = doc(userChatRef, userDetails.id);
+        const userChatReceiverRef = doc(userChatRef, user.id);
+  
+        await setDoc(
+          userChatSenderRef,
+          {
+            chats: {
+              [chatId]: {
+                lastMessage: "",
+                receiverId: user.id,
+                updatedAt: serverTimestamp(),
+                isTyping: false,
+                isNewMessage: false,
+              },
+            },
+          },
+          { merge: true }
+        );
+  
+        await setDoc(
+          userChatReceiverRef,
+          {
+            chats: {
+              [chatId]: {
+                lastMessage: "",
+                receiverId: userDetails.id,
+                updatedAt: serverTimestamp(),
+                isTyping: false,
+                isNewMessage: false,
+                
+              },
+            },
+          },
+          { merge: true }
+          );
+          changeChat(chatId, user);
+  }
+        console.log("✅ New chat added:", chatId);
+      } catch (error) {
+        console.error("🔥 Error adding user to chat:", error);
+     }
+     setTimeout(() => {
+       navigate("/Inbox");
+       
+     }, 1000);
     };
   return (
     <>
@@ -68,7 +145,21 @@ export default function SearchPage() {
               <Search size={24}/>
               
               <input type="text" onChange={handleInputChange} className="outline-none border-0 w-full" />
-            {istyping && (
+           </div>
+           
+              <CalendarForm
+                mode="single"
+                selected={date}
+                onSelect={setDate}
+                disabled={undefined}
+                className="rounded-md h-full"
+              />
+          </div>
+
+          <div className="flex flex-col w-full px-[2rem] max-lg:px-[1rem] max-md:px-2">
+            {/* <DoctorCard setHideNavbar={setHideNavbar} /> */}
+            {/*Haylik ta7b takhdam biha bra7tak*/}
+            {users && (
               users.length > 0 ? (
                 users.map((user) => (
                   <div className="flex items-center gap-1.5 justify-between mt-4" key={user.id}>
@@ -83,7 +174,7 @@ export default function SearchPage() {
                     
                     <div>
                       <button onClick={() => handleAddingUser(user)} className="p-1 bg-blue-950 rounded text-white">
-                        add user
+                      Chat
                       </button>
                     </div>
                   </div>
@@ -91,20 +182,7 @@ export default function SearchPage() {
               ) : (
                 <p className={`mt-2 pl-2 ${istyping ? "" : ""}`}>No users found</p>
               )
-            )} </div>
-           
-              <CalendarForm
-                mode="single"
-                selected={date}
-                onSelect={setDate}
-                disabled={undefined}
-                className="rounded-md h-full"
-              />
-          </div>
-
-          <div className="flex flex-col w-full px-[2rem] max-lg:px-[1rem] max-md:px-2">
-            {/* <DoctorCard setHideNavbar={setHideNavbar} /> */}
-            {/*Haylik ta7b takhdam biha bra7tak*/}
+            )} 
           </div>
         </section>
       </section>
