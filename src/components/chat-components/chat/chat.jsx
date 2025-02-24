@@ -305,7 +305,7 @@ function Chat() {
       </div>
 
       <div
-        className="h-[100%] w-full p-4 max-md:px-1 flex flex-col scroll-smooth border border-[#eee] rounded-[20px] overflow-auto scrollbar-none max-md:mt-[3rem] pb-[2rem]"
+        className="h-[100%] w-full p-4 max-md:px-1 flex flex-col scroll-smooth border border-[#eee] rounded-[20px] overflow-auto scrollbar-none max-md:mt-[3rem] max-md:pb-[5rem]"
         ref={chatContainerRef}
         onScroll={handleScroll}
       >
