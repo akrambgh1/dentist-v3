@@ -119,7 +119,7 @@ const ChatList = () => {
   }, [userDetails?.id]);
 
   return (
-    <div className="w-full gap-1 flex flex-col overflow-auto scrollbar-none p-2">
+    <div className="w-full gap-1 flex flex-col overflow-auto scrollbar-none py-2">
       {chats.length === 0 ? (
         <>
           <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
@@ -156,7 +156,7 @@ const ChatList = () => {
           <div
             key={chat.chatId}
             onClick={() => changeChat(chat.chatId, chat.user)}
-            className={`rounded-2xl flex w-full px-3 py-2 gap-4 cursor-pointer
+            className={`rounded-2xl flex w-full py-2 px-2 gap-4 cursor-pointer
               ${chatId === chat.chatId ? "" : "hover:bg-gray-100"} 
               ${chat.isNewMessage ? "bg-blue-200" : ""}`} // Highlight new messages
           >

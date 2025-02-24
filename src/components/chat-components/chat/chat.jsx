@@ -353,11 +353,11 @@ function Chat() {
       </div>
 
       {isTyping && (
-        <p className="text-gray-500 text-sm px-4  ">
+        <p className="text-gray-500 text-sm px-4">
           {recipient?.Firstname || "User"} is typing ......
         </p>
       )}
-      <div className="p-4 bg-white flex items-center  border-[#eee]">
+      <div className="p-4 bg-white flex items-center border-t border-[#eee]">
         <input
           type="text"
           className="flex-1 p-2 outline-none"

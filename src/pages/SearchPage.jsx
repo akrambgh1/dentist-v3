@@ -104,6 +104,7 @@ export default function SearchPage() {
 
           <div className="flex flex-col w-full px-[2rem] max-lg:px-[1rem] max-md:px-2">
             {/* <DoctorCard setHideNavbar={setHideNavbar} /> */}
+            {/*Haylik ta7b takhdam biha bra7tak*/}
           </div>
         </section>
       </section>
