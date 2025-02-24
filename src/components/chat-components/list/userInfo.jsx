@@ -1,21 +1,25 @@
-import { useUserStore } from '../../userStore';
-import { SquarePen } from 'lucide-react';
-const UserInfo = () => {
-    const { userDetails } = useUserStore()
-  
-  return (
-    <section className='flex items-center  w-full gap-[3rem]'>
-    <div className=' flex   flex-1 items-center justify-start w-full gap-2'>
-      <div className='rounded-[] w-12'>
-        <img className='rounded-[50%] w-10 h-10' src={userDetails?.photo|| "profilepi.jpg"} alt="" />
-      </div>
-        <h1>{ userDetails?.Firstname}</h1>
-            
-            
-      </div>
-      <SquarePen />
-    </section>
-  )
-}
+import { useUserStore } from "../../userStore";
 
-export default UserInfo
+const UserInfo = () => {
+  const { userDetails } = useUserStore();
+
+  return (
+    <section className="flex items-center  w-full gap-[3rem]">
+      <div className="pl-2 flex flex-1 items-center justify-between w-full gap-2">
+        <div className="bg-[#181940] px-4 py-1 rounded-[20px]">
+          <h1 className="font-[600] text-white">Hello, {userDetails?.Firstname}</h1>
+        </div>
+        
+        <div className="rounded-[] w-12">
+          <img
+            className="rounded-[50%] w-10 h-10"
+            src={userDetails?.photo || "profilepi.jpg"}
+            alt=""
+          />
+        </div>
+      </div>
+    </section>
+  );
+};
+
+export default UserInfo;
