@@ -305,7 +305,7 @@ function Chat() {
       </div>
 
       <div
-        className="h-dvh w-full p-4 max-md:px-1 flex flex-col scroll-smooth overflow-auto scrollbar-none max-md:mt-[3rem] max-md:pb-[5rem]"
+        className="h-dvh w-full p-4 max-md:px-1 flex flex-col scroll-smooth overflow-auto scrollbar-none max-md:mt-[3rem]"
         ref={chatContainerRef}
         onScroll={handleScroll}
       >
@@ -353,11 +353,11 @@ function Chat() {
       </div>
 
       {isTyping && (
-        <p className="text-gray-500 text-sm px-4">
+        <p className="text-gray-500 text-sm px-4  ">
           {recipient?.Firstname || "User"} is typing ......
         </p>
       )}
-      <div className="p-4 bg-white flex items-center max-md:fixed max-md:bottom-0 w-full border-t z-50 border-[#eee]">
+      <div className="p-4 bg-white flex items-center  border-[#eee]">
         <input
           type="text"
           className="flex-1 p-2 outline-none"
