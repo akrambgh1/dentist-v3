@@ -95,7 +95,7 @@ function Chat() {
   };
   const handleCloseChat = () => {
     console.log("Before closing:", { chatId });
-    changeChat(null, null);
+    changeChat(null);
     setTimeout(() => {
       console.log("After closing:", useChatStore.getState()); // Check if state updates
     }, 10);

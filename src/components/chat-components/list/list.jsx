@@ -25,10 +25,13 @@ function List() {
         const usersRef = collection(db, "users");
         const q = query(
           usersRef,
+         
           where("lowercasedName", ">=", searchTerm),
-          where("lowercasedName", "<=", searchTerm + "\uf8ff")
+          where("lowercasedName", "<=", searchTerm + "\uf8ff"),
+          where("Usertype", "==", "dentist")
         );
 
+      
         const querySnapshot = await getDocs(q);
         const usersList = querySnapshot.docs.map((doc) => ({
           id: doc.id,
@@ -42,13 +45,13 @@ function List() {
     };
     
     fetchUsers();
-  }, [searchTerm]);
+  }, [searchTerm,]);
 
   const handleInputChange = async (e) => {
     setIstyping(true);
     setSearchTerm(e.target.value.toLowerCase());
     
-   
+    
     
   };
 
