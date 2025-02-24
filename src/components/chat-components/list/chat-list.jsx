@@ -161,11 +161,11 @@ const ChatList = () => {
               ${chat.isNewMessage ? "bg-blue-200" : ""}`} // Highlight new messages
           >
             <img
-              className="rounded-full w-12 h-12 object-cover"
+              className="rounded-full w-14 h-14 object-cover"
               src={chat.user?.photo || "profilepi.jpg"}
               alt="Profile"
             />
-            <div className="w-full">
+            <div className="w-full flex flex-col gap-[.25rem]">
               <div className="flex justify-between items-center">
                 <h1 className="font-semibold text-lg">
                   {chat.user?.Firstname || "Unknown"}{" "}

@@ -259,9 +259,9 @@ function Chat() {
 
   return (
     <>
-    <div className="w-2/3 relative h-screen max-md:h-dvh flex flex-col max-md:absolute z-30 max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400">
-      <div className="p-4 flex items-center justify-between max-md:fixed max-md:w-full max-md:top-0 max-md:bg-white">
-        <div className="flex items-center gap-[1rem]">
+    <div className="w-2/3 relative h-screen max-md:h-dvh flex flex-col max-md:absolute z-30 max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400 pt-2">
+      <div className="p-4 flex items-center justify-between max-md:fixed max-md:w-full max-md:top-0 max-md:bg-white border-b border-[#eee]">
+        <div className="flex items-center gap-[1rem] ">
           <ArrowLeft onClick={() => handleCloseChat()}>Close Chat</ArrowLeft>
           {isReceiverUserBlocked || isCurrentUserBlocked ? (
             <div className="flex items-center">
@@ -305,7 +305,7 @@ function Chat() {
       </div>
 
       <div
-        className="h-[100%] w-full p-4 max-md:px-1 flex flex-col scroll-smooth border border-[#eee] rounded-[20px] overflow-auto scrollbar-none max-md:mt-[3rem] max-md:pb-[5rem]"
+        className="h-[100%] w-full p-4 max-md:px-1 flex flex-col scroll-smooth overflow-auto scrollbar-none max-md:mt-[3rem] max-md:pb-[5rem]"
         ref={chatContainerRef}
         onScroll={handleScroll}
       >
@@ -357,7 +357,7 @@ function Chat() {
           {recipient?.Firstname || "User"} is typing ......
         </p>
       )}
-      <div className="p-4 bg-white flex items-center max-md:fixed max-md:bottom-0 w-full">
+      <div className="p-4 bg-white flex items-center max-md:fixed max-md:bottom-0 w-full border-t border-[#eee]">
         <input
           type="text"
           className="flex-1 p-2 outline-none"
