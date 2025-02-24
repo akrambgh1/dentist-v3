@@ -357,7 +357,7 @@ function Chat() {
           {recipient?.Firstname || "User"} is typing ......
         </p>
       )}
-      <div className="p-4 bg-white flex items-center max-md:absolute max-md:bottom-0 w-full border-t border-[#eee]">
+      <div className="p-4 bg-white flex items-center max-md:fixed max-md:bottom-0 w-full border-t border-[#eee]">
         <input
           type="text"
           className="flex-1 p-2 outline-none"

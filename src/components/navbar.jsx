@@ -34,7 +34,7 @@ export default function Nav() {
 
       {/* mobile navbar  */}
 
-      <section className="fixed bottom-0 left-0 bg-[#fff] w-full py-[1rem] transition-all duration-200 /* md:hidden */ flex justify-between items-center border-t-1 border-[#e8e8e8] px-[1rem] z-10">
+      <section className="fixed bottom-0 left-0 bg-[#bd3030] w-full py-[1rem] transition-all duration-200 /* md:hidden */ flex justify-between items-center border-t-1 border-[#e8e8e8] px-[1rem] z-10">
         <Link to="/">
           <div className="flex flex-col gap-[.25rem] items-center justify-center">
             <House stroke="#111238" size={21} />
