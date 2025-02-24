@@ -103,7 +103,7 @@ export default function SearchPage() {
           </div>
 
           <div className="flex flex-col w-full px-[2rem] max-lg:px-[1rem] max-md:px-2">
-            <DoctorCard setHideNavbar={setHideNavbar} />
+            {/* <DoctorCard setHideNavbar={setHideNavbar} /> */}
           </div>
         </section>
       </section>

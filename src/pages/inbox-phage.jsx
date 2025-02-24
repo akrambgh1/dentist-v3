@@ -5,7 +5,7 @@ import Chat from "../components/chat-components/chat/chat";
 import { useChatStore } from "../components/userChatStore";
 import Detail from "../components/chat-components/detail";
 import Nav from "../components/navbar";
-import { useEffect } from "react";
+import { useEffect , useState } from "react";
 import { useUserStore } from "../components/userStore";
 import { auth } from "../components/firebase";
 import { onAuthStateChanged } from "firebase/auth";
@@ -13,7 +13,7 @@ import { onAuthStateChanged } from "firebase/auth";
 export default function Inbox() {
   const { chatId } = useChatStore();
   const { fetchUsersInfo } = useUserStore();
-
+  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
 
 
 useEffect(() => {
@@ -30,7 +30,7 @@ useEffect(() => {
 }, [fetchUsersInfo]);
   return (
     <>
-      <Nav />
+      {isNavbarVisible && <Nav />}
       <section className="flex">
         <div className="w-auto">
           <Sidebar></Sidebar>
@@ -39,7 +39,7 @@ useEffect(() => {
           <List />
           {chatId && (
             <>
-              <Chat />
+              <Chat setIsNavbarVisible={setIsNavbarVisible}/>
               
             </>
           )}

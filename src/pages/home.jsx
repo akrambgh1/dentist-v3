@@ -15,10 +15,10 @@ export default function Home() {
   
   return (
     <>
-      <Nav />
+      <Nav></Nav>
 
       <section className="flex min-h-screen h-auto">
-        <Sidebar></Sidebar>
+        <Sidebar />
         <section className="h-[100vh] flex-1 overflow-y-scroll">
           <section className="flex flex-col min-h-screen gap-[2rem] mb-[7rem] items-center pt-[2rem]">
             <div className="flex flex-col w-[100%] items-center justify-center gap-[3rem] pl-[4rem] pr-[2rem] max-md:px-4 max-xl:pl-[2rem]">
