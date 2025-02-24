@@ -19,7 +19,7 @@ export default function Home() {
 
       <section className="flex min-h-screen h-auto">
         <Sidebar />
-        <section className="h-[100vh] flex-1 overflow-y-scroll">
+        <section className="h-[100dvh] flex-1 overflow-y-scroll">
           <section className="flex flex-col min-h-screen gap-[2rem] mb-[7rem] items-center pt-[2rem]">
             <div className="flex flex-col w-[100%] items-center justify-center gap-[3rem] pl-[4rem] pr-[2rem] max-md:px-4 max-xl:pl-[2rem]">
               <div className="flex flex-col gap-[1rem] w-full mb-[3rem] items-center justify-center h-[55vh] py-4 bg-[#f5f5dc] rounded-[20px] px-[2rem] text-center max-md:h-auto max-md:py-[2rem] max-md:px-4">
