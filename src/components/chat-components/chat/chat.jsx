@@ -305,7 +305,7 @@ function Chat() {
       </div>
 
       <div
-        className="h-[100%] w-full p-4 max-md:px-1 flex flex-col scroll-smooth border border-[#eee] rounded-[20px] overflow-auto scrollbar-none max-md:mt-[3rem]"
+        className="h-[100%] w-full p-4 max-md:px-1 flex flex-col scroll-smooth border border-[#eee] rounded-[20px] overflow-auto scrollbar-none max-md:mt-[3rem] pb-[2rem]"
         ref={chatContainerRef}
         onScroll={handleScroll}
       >
@@ -357,7 +357,7 @@ function Chat() {
           {recipient?.Firstname || "User"} is typing ......
         </p>
       )}
-      <div className="p-4 bg-white flex items-center max-md:fixed max-md:bottom-0">
+      <div className="p-4 bg-white flex items-center max-md:fixed max-md:bottom-0 w-full">
         <input
           type="text"
           className="flex-1 p-2 outline-none"
