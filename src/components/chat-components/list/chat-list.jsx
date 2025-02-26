@@ -119,7 +119,7 @@ const ChatList = () => {
   }, [userDetails?.id]);
 
   return (
-    <div className="w-full gap-1 flex flex-col overflow-auto scrollbar-none py-2">
+    <div className="w-full gap-1 flex flex-col overflow-auto scrollbar-none py-2 tracking-tight">
       {chats.length === 0 ? (
         <>
           <div className="rounded-2xl border border-gray-200 w-full py-3 px-4 gap-4 flex items-center">
@@ -165,9 +165,9 @@ const ChatList = () => {
               src={chat.user?.photo || "profilepi.jpg"}
               alt="Profile"
             />
-            <div className="w-full flex flex-col gap-[.25rem]">
+            <div className="w-full flex flex-col gap-[.15rem]">
               <div className="flex justify-between items-center">
-                <h1 className="font-semibold text-lg">
+                <h1 className="text-lg text-[#000000]">
                   {chat.user?.Firstname || "Unknown"}{" "}
                   {chat.user?.Lastname || "Unknown"}
                 </h1>

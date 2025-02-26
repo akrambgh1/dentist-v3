@@ -28,6 +28,7 @@ useEffect(() => {
 
   return () => unSub();
 }, [fetchUsersInfo]);
+
   return (
     <>
       {isNavbarVisible && <Nav />}

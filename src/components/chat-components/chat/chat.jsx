@@ -259,13 +259,13 @@ function Chat() {
 
   return (
     <>
-    <div className="w-2/3 relative h-dvh max-md:h-dvh flex flex-col max-md:fixed z-30 max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400 pt-2">
-      <div className="p-4 flex items-center justify-between max-md:fixed max-md:w-full max-md:top-0 max-md:bg-white border-b border-[#eee]">
-        <div className="flex items-center gap-[1rem] ">
-          <ArrowLeft onClick={() => handleCloseChat()}>Close Chat</ArrowLeft>
+    <div className="w-[50%] flex-1 relative h-dvh max-md:h-dvh flex flex-col max-md:fixed z-30 max-md:top-0 max-md:right-0 transition-all max-md:w-full max-md:bg-white ease duration-400 pt-2">
+      <div className="max-md:px-2 px-4 py-4 flex items-center justify-between max-md:fixed max-md:w-full max-md:top-0 max-md:bg-white border-b border-[#eee]">
+        <div className="flex items-center gap-[.5rem]">
+          <ArrowLeft className="cursor-pointer" onClick={() => handleCloseChat()}>Close Chat</ArrowLeft>
           {isReceiverUserBlocked || isCurrentUserBlocked ? (
             <div className="flex items-center">
-              <p className="text-red-500 font-semibold">
+              <p className="text-red-500 uppercase">
                 This account is blocked
               </p>
             </div>
@@ -277,8 +277,9 @@ function Chat() {
                   className="w-10 h-10 rounded-full mr-3"
                   alt="Profile"
                 />
-                <h1 className="text-lg font-semibold">
-                  {recipient.Firstname || "Unknown"}
+                <h1 className="text-md uppercase font-[500]">
+                  {recipient.Firstname || "Unknown"}{" "}
+                  {recipient.Lastname || "Unknown"}
                 </h1>
               </div>
             </>
@@ -290,14 +291,14 @@ function Chat() {
         {isReceiverUserBlocked || isCurrentUserBlocked ? (
           <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
             <LockKeyholeOpen className="text-white" onClick={unblockUser}>
-              Unblock Account
+              
             </LockKeyholeOpen>
           </div>
         ) : (
           <>
             <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
               <LockKeyhole className="text-white " onClick={blockUser}>
-                Block Account
+            
               </LockKeyhole>
             </div>
           </>
@@ -305,7 +306,7 @@ function Chat() {
       </div>
 
       <div
-        className="h-dvh w-full p-4 max-md:px-1 flex flex-col scroll-smooth overflow-auto scrollbar-none max-md:mt-[3rem]"
+        className="h-dvh w-full p-4 max-md:px-1 flex flex-col scroll-smooth overflow-auto scrollbar-none max-md:mt-[3rem] max-md:pb-[5rem]"
         ref={chatContainerRef}
         onScroll={handleScroll}
       >
@@ -357,7 +358,7 @@ function Chat() {
           {recipient?.Firstname || "User"} is typing ......
         </p>
       )}
-      <div className="p-4 bg-white flex items-center border-t border-[#eee]">
+      <div className="p-4 bg-white flex items-center border-t border-[#eee] max-md:fixed max-md:bottom-0 w-full">
         <input
           type="text"
           className="flex-1 p-2 outline-none"
