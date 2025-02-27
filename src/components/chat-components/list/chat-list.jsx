@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
@@ -168,8 +169,12 @@ const ChatList = () => {
             <div className="w-full flex flex-col gap-[.15rem]">
               <div className="flex justify-between items-center">
                 <h1 className="text-lg text-[#000000]">
-                  {chat.user?.Firstname || "Unknown"}{" "}
+                  {chat.user?.Firstname || "Unknown"}
+
+                  {" "}
+
                   {chat.user?.Lastname || "Unknown"}
+
                 </h1>
                 <span className="text-sm text-gray-500">
                   {timestamps[chat.chatId] || ""}
@@ -190,5 +195,6 @@ const ChatList = () => {
     </div>
   );
 };
+
 
 export default ChatList;

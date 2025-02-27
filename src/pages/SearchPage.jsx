@@ -22,6 +22,7 @@ import { useChatStore } from "../components/userChatStore";
 import { db } from "../components/firebase";
 import { useUserStore } from "../components/userStore";
 import { Star, Clock } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 
 export default function SearchPage() {
   const [date, setDate] = React.useState(new Date());
@@ -261,7 +262,7 @@ export default function SearchPage() {
                     <div>
                       {isMobile && (
                         <div
-                          className={`fixed bottom-0 left-0 overflow-y-scroll w-full transition-all duration-200 ease flex justify-center bg-[#ffffff] rounded-t-[30px] 
+                          className={`fixed bottom-0 left-0 overflow-y-scroll w-full transition-all duration-200 ease flex justify-center border-t border-t-[#e4e4e4] bg-[#ffffff] rounded-t-[30px] 
         ${showAppointmentModal ? "h-[80%] flex" : "h-0"}`}
                         >
                           <div className="w-full h-full flex flex-col items-center py-5 gap-[1rem]">
@@ -301,7 +302,7 @@ export default function SearchPage() {
                             <div
                               className="absolute top-[5%] left-[5%] bg-[#eee] p-2 rounded-full cursor-pointer"
                               onClick={closeModal}
-                            ></div>
+                            ><ArrowLeft /></div>
                           </div>
                         </div>
                       )}
