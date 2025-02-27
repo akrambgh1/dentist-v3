@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
@@ -25,8 +26,8 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [recipient, setRecipient] = useState(null);
-  const { isReceiverUserBlocked } = useChatStore();
-  const { isCurrentUserBlocked } = useChatStore();
+  const { isReceiverUserBlocked,isCurrentUserBlocked,changeBlock } = useChatStore();
+ 
   const [isTyping, setIsTyping] = useState(false);
 
   const messageEndRef = useRef(null);
@@ -232,28 +233,23 @@ function Chat() {
   // Pass true or false dynamically
 
   const blockUser = async () => {
-    await updateDoc(doc(db, "users", userDetails.id), {
-      blocked: arrayUnion(recipient.id)
+    if (!recipient) return;
+    try{await updateDoc(doc(db, "users", userDetails.id), {
+      blocked: isReceiverUserBlocked ? arrayRemove(recipient.id) : arrayUnion(recipient.id)
     });
+      changeBlock()
     console.log("blockUser");
-    await updateDoc(doc(db, "users", recipient.id), {
-      blocked: arrayUnion(userDetails.id)
-    });
+    
+    
 
-    updateBlockStatus(recipient.id);
+      
+    } catch (err) {
+      console.error("Failed to block user",err);
+    }
+    
   };
 
-  const unblockUser = async () => {
-    await updateDoc(doc(db, "users", userDetails.id), {
-      blocked: arrayRemove(recipient.id)
-    });
-
-    await updateDoc(doc(db, "users", recipient.id), {
-      blocked: arrayRemove(userDetails.id)
-    });
-
-    updateBlockStatus(recipient.id);
-  };
+  
 
 
 
@@ -289,15 +285,15 @@ function Chat() {
         </div>
 
         {isReceiverUserBlocked || isCurrentUserBlocked ? (
-          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-            <LockKeyholeOpen className="text-white" onClick={unblockUser}>
+          <div className="bg-[#ffffff] p-2 flex items-center justify-center rounded-lg cursor-pointer">
+            <LockKeyholeOpen className="text-black" onClick={blockUser}>
               
             </LockKeyholeOpen>
           </div>
         ) : (
           <>
-            <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-              <LockKeyhole className="text-white " onClick={blockUser}>
+            <div className="bg-[#ffffff] p-2 flex items-center justify-center rounded-lg cursor-pointer">
+              <LockKeyhole className="text-black " onClick={blockUser}>
             
               </LockKeyhole>
             </div>
@@ -335,7 +331,7 @@ function Chat() {
               >
                 <div
                   className={`px-5 py-2 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
-                    isMe ? "bg-[#181940] text-white" : "bg-gray-200 text-black"
+                    isMe ? "bg-[#005bd1] text-white" : "bg-gray-200 text-black"
                   }`}
                 >
                   {msg.text}
@@ -373,7 +369,7 @@ function Chat() {
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         />
         <button
-          className="ml-2 px-8 max-md:px-2 p-2 bg-[#181940] text-white rounded-lg"
+          className="ml-2 px-8 max-md:px-2 p-2 bg-[#005bd1] text-white rounded-lg"
           onClick={sendMessage}
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         >

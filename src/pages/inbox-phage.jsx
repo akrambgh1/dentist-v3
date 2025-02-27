@@ -36,7 +36,7 @@ useEffect(() => {
         <div className="w-auto">
           <Sidebar></Sidebar>
         </div>
-        <div className="flex w-full gap-[0rem]">
+        <div className="flex w-full gap-[0rem] transition-all ease duration-400 ">
           <List />
           {chatId && (
             <>
@@ -44,13 +44,7 @@ useEffect(() => {
               
             </>
           )}
-          {/*
-           {detail && (
-            <>
-             
-              <Detail />
-            </>
-          )}*/}
+          
         </div>
       </section>
     </>
