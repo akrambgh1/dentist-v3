@@ -156,7 +156,7 @@ export default function SearchPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-[1rem] w-full px-[2rem] max-lg:px-[1rem] max-md:px-2 max-md:gap-4">
+          <div className="flex flex-col gap-[1rem] w-full h-full px-[2rem] max-lg:px-[1rem] max-md:px-2 max-md:gap-4">
             {/* <DoctorCard setHideNavbar={setHideNavbar} /> */}
             {/*Haylik ta7b takhdam biha bra7tak*/}
             {users &&
@@ -189,7 +189,7 @@ export default function SearchPage() {
                     </div>
 
                     <div className="flex max-lg:flex-col w-full max-lg:gap-[1rem]">
-                      <div className="flex gap-2 items-center justify-center bg-[#e0e1f3] px-4 py-2 rounded-[5px] max-lg:w-full w-[60%]">
+                      <div className="flex gap-2 items-center justify-center bg-[#cfcfee] px-4 py-2 rounded-[5px] max-lg:w-full w-[60%]">
                         <h1>Next appointment :</h1>
                         <div className="flex items-center justify-center gap-2">
                         <Clock size={15}/>

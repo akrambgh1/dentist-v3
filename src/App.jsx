@@ -10,6 +10,7 @@ import SearchPage from "./pages/SearchPage";
 import RegisterForm from "./pages/Regestration";
 import Inbox from "./pages/inbox-phage";
 import Dentistprofile from "./pages/Dentist-profile";
+import Appointments from "./pages/Appointments";
 
 
 function App() {
@@ -27,6 +28,7 @@ function App() {
           <Route path="/RegisterForm" element={<RegisterForm />} />
           <Route path="/inbox" element={<Inbox />} />
           <Route path="/Dentistprofile" element={<Dentistprofile />} />
+          <Route path="/Appointments" element={<Appointments />} />
         </Routes>
         <ToastContainer />
       </Router>
