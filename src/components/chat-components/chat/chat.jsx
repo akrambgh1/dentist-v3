@@ -236,6 +236,7 @@ function Chat() {
     try{await updateDoc(doc(db, "users", userDetails.id), {
       blocked: isReceiverUserBlocked ? arrayRemove(recipient.id) : arrayUnion(recipient.id)
     });
+   
       changeBlock()
     console.log("blockUser");
     
@@ -283,33 +284,39 @@ function Chat() {
           )}
         </div>
 
-        {isReceiverUserBlocked || isCurrentUserBlocked ? (
-          <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-            <LockKeyholeOpen className="text-white" onClick={blockUser}>
+       
+          <div onClick={blockUser} className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
+            {isReceiverUserBlocked ? (<LockKeyholeOpen className="text-white">
               
-            </LockKeyholeOpen>
-          </div>
-        ) : (
-          <>
-            <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-              <LockKeyhole className="text-white " onClick={blockUser}>
+            </LockKeyholeOpen>):(<LockKeyhole className="text-white " >
             
-              </LockKeyhole>
-            </div>
-          </>
-        )}
+              </LockKeyhole>)}
+            
+          </div>
+        
+         
+          
+
       </div>
 
       <div
         className="h-dvh w-full p-4 max-md:px-1 flex flex-col scroll-smooth overflow-auto scrollbar-none max-md:mt-[3rem] max-md:pb-[5rem]"
         ref={chatContainerRef}
         onScroll={handleScroll}
-      >
-        {isReceiverUserBlocked || isCurrentUserBlocked ? (
+        >
+         
+          {isCurrentUserBlocked ? (
           <div className="p-4 text-center">
             <p className="text-gray-500">
-              You can't send or receive messages because this account is
-              blocked.
+              You can't send or receive messages because this account have blocked you.
+              </p>
+              </div>
+          )
+        :isReceiverUserBlocked ? (
+          <div className="p-4 text-center">
+            <p className="text-gray-500">
+            You can't send or receive messages because you've blocked this
+            account.
             </p>
           </div>
         ) : (

@@ -9,7 +9,7 @@ import { useChatStore } from "../../userChatStore";
 const ChatList = () => {
   const [chats, setChats] = useState([]);
   const { userDetails } = useUserStore();
-  const { chatId, changeChat } = useChatStore();
+  const { chatId, changeChat,isCurrentUserBlocked } = useChatStore();
   const [timestamps, setTimestamps] = useState({});
 
   useEffect(() => {
@@ -168,8 +168,12 @@ const ChatList = () => {
             <div className="w-full flex flex-col gap-[.15rem]">
               <div className="flex justify-between items-center">
                 <h1 className="text-lg text-[#000000]">
-                  {chat.user?.Firstname || "Unknown"}{" "}
+                  {chat.user?.Firstname || "Unknown"}
+
+                  {" "}
+
                   {chat.user?.Lastname || "Unknown"}
+
                 </h1>
                 <span className="text-sm text-gray-500">
                   {timestamps[chat.chatId] || ""}
@@ -190,5 +194,6 @@ const ChatList = () => {
     </div>
   );
 };
+
 
 export default ChatList;
