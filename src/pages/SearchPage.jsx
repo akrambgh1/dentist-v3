@@ -130,6 +130,9 @@ export default function SearchPage() {
       navigate("/Inbox");
     }, 1000);
   };
+  const Navigate = (user)=>{
+    navigate(`/dentist/${user.id}`, { state: { user } });
+  }
   return (
     <>
       {!hideNavbar && <Nav />}
@@ -164,6 +167,7 @@ export default function SearchPage() {
                 users.map((user) => (
                   <div
                     className="flex items-center gap-3 justify-between mt-4 max-md:flex-col bg-[#f4f4fb] p-4 rounded-[20px] flex-col"
+                    
                     key={user.id}
                   >
                     <div className="w-full gap-[1rem] flex justify-between">
@@ -201,12 +205,18 @@ export default function SearchPage() {
                     <div className="flex gap-2 items-center w-full justify-end">
                       <button
                         onClick={() => handleAddingUser(user)}
-                        className="px-4 py-2 bg-blue-950 rounded text-white w-fit max-lg:w-[30%]"
+                        className="px-4 py-2 bg-blue-950 rounded text-white w-fit max-lg:w-[30%] text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2"
                       >
                         Chat
+                        </button>
+                        <button
+                        onClick={() => Navigate(user)}
+                        className="px-4 py-2 bg-blue-950 rounded text-white w-fit max-lg:w-[30%] text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2"
+                      >
+                       view profile
                       </button>
-                      <button className="px-4 py-2 bg-blue-950 rounded text-white w-fit max-lg:w-[70%]">
-                        make an appointment
+                      <button  className="px-4 py-2 bg-blue-950 rounded text-white w-fit max-lg:w-[70%]text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2">
+                        Make an appointment
                       </button>
                     </div>
                     </div>

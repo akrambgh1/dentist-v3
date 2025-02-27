@@ -25,8 +25,8 @@ function Chat() {
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
   const [recipient, setRecipient] = useState(null);
-  const { isReceiverUserBlocked } = useChatStore();
-  const { isCurrentUserBlocked } = useChatStore();
+  const { isReceiverUserBlocked,isCurrentUserBlocked,changeBlock } = useChatStore();
+ 
   const [isTyping, setIsTyping] = useState(false);
 
   const messageEndRef = useRef(null);
@@ -232,28 +232,23 @@ function Chat() {
   // Pass true or false dynamically
 
   const blockUser = async () => {
-    await updateDoc(doc(db, "users", userDetails.id), {
-      blocked: arrayUnion(recipient.id)
+    if (!recipient) return;
+    try{await updateDoc(doc(db, "users", userDetails.id), {
+      blocked: isReceiverUserBlocked ? arrayRemove(recipient.id) : arrayUnion(recipient.id)
     });
+      changeBlock()
     console.log("blockUser");
-    await updateDoc(doc(db, "users", recipient.id), {
-      blocked: arrayUnion(userDetails.id)
-    });
+    
+    
 
-    updateBlockStatus(recipient.id);
+      
+    } catch (err) {
+      console.error("Failed to block user",err);
+    }
+    
   };
 
-  const unblockUser = async () => {
-    await updateDoc(doc(db, "users", userDetails.id), {
-      blocked: arrayRemove(recipient.id)
-    });
-
-    await updateDoc(doc(db, "users", recipient.id), {
-      blocked: arrayRemove(userDetails.id)
-    });
-
-    updateBlockStatus(recipient.id);
-  };
+  
 
 
 
@@ -290,7 +285,7 @@ function Chat() {
 
         {isReceiverUserBlocked || isCurrentUserBlocked ? (
           <div className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-            <LockKeyholeOpen className="text-white" onClick={unblockUser}>
+            <LockKeyholeOpen className="text-white" onClick={blockUser}>
               
             </LockKeyholeOpen>
           </div>
