@@ -35,7 +35,7 @@ export default function SearchPage() {
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [showAppointmentModal, setShowAppointmentModal] = useState(false);
-
+const [DoctorCard, setDoctorCard] = useState([]);
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth <= 768);
@@ -45,10 +45,11 @@ export default function SearchPage() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const handleAppointmentClick = () => {
+  const handleAppointmentClick = (user) => {
     if (isMobile) {
       setShowAppointmentModal(true);
-      setHideNavbar(true); // Hide navbar when modal opens
+      setHideNavbar(true);
+      setDoctorCard(user)// Hide navbar when modal opens
     } else {
       alert("Redirecting to appointment page...");
     }
@@ -56,7 +57,7 @@ export default function SearchPage() {
 
   const closeModal = () => {
     setShowAppointmentModal(false);
-
+    setDoctorCard([])
     setTimeout(() => {
       setHideNavbar(false);
     }, 350);
@@ -252,7 +253,7 @@ export default function SearchPage() {
 
                       <div>
                         <button
-                          onClick={handleAppointmentClick}
+                          onClick={()=>handleAppointmentClick(user)}
                           className="px-4 py-2 bg-[#18717b] rounded  w-fit max-lg:w-[100%] text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2"
                         >
                           View details
@@ -269,12 +270,12 @@ export default function SearchPage() {
                             <div className="flex flex-col w-full h-fit items-center gap-1">
                               <img
                                 className="rounded-full h-24 w-24 object-cover bg-white"
-                                src="/profilepi.jpg"
+                                src={DoctorCard.photo ||"/profilepi.jpg"}
                                 alt="user"
                               />
-                              <h1 className="text-[1.5rem]">Doctor's Name</h1>
+                              <h1 className="text-[1.5rem]">Dr.{DoctorCard.Lastname}</h1>
                               <h2 className="text-[1rem] text-[#8d8d8d]">
-                                EmailAddress@gmail.com
+                                {DoctorCard.email}
                               </h2>
                             </div>
                             <div className="w-full flex justify-center"></div>
@@ -287,13 +288,13 @@ export default function SearchPage() {
                               }`}
                             >
                               <button
-                                onClick={() => handleAddingUser(user)}
+                                onClick={() => handleAddingUser(DoctorCard)}
                                 className="text-white w-[30%] bg-[#181940] rounded-[5px] p-2"
                               >
                                 Chat
                               </button>
                               <button
-                                onClick={() => Navigate(user)}
+                                onClick={() => Navigate(DoctorCard)}
                                 className="text-white w-[70%] bg-[#181940] rounded-[5px] p-2"
                               >
                                 View profile
