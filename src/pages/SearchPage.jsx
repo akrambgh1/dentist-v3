@@ -23,6 +23,7 @@ import { db } from "../components/firebase";
 import { useUserStore } from "../components/userStore";
 import { Star, Clock } from "lucide-react";
 import { ArrowLeft } from "lucide-react";
+import { MapPin } from 'lucide-react';
 
 export default function SearchPage() {
   const [date, setDate] = React.useState(new Date());
@@ -171,7 +172,7 @@ export default function SearchPage() {
         <Sidebar></Sidebar>
         <section className="h-[100dvh] flex-1 overflow-y-scroll">
           <div className="w-full p-8 pl-[3rem] flex flex-col justify-center items-center gap-[1rem] max-md:p-4 max-md:pl-[1rem] bg-[#ffffff]">
-            <div className="rounded-2xl flex w-full py-2 px-2 gap-4 cursor-pointer">
+            {/* <div className="rounded-2xl flex w-full py-2 px-2 gap-4 cursor-pointer">
               <img
                 className="rounded-full w-14 h-14 object-cover"
                 src={userDetails?.photo || "/profilepi.jpg"}
@@ -186,7 +187,7 @@ export default function SearchPage() {
                   </span>
                 </div>
               </div>
-            </div>
+            </div> */}
             <div className="flex h-fit items-center border-[#eee] text-black border-[1px] w-[60%] max-lg:w-full py-2 pl-[.5rem] pr-[1rem] rounded-[15px] gap-[1rem]">
               <Search size={24} />
 
@@ -207,29 +208,29 @@ export default function SearchPage() {
             />
           </div>
 
-          <div className="flex flex-col gap-[1rem] w-full overflow-y-scroll px-[1rem] max-lg:px-[1rem] max-md:px-1 ">
+          <div className="max-md:flex max-md:flex-col grid grid-cols-2 gap-[1rem] w-full overflow-y-scroll px-[1rem] max-lg:px-[1rem] max-md:px-1 max-md:pb-[1rem]">
             {/* <DoctorCard setHideNavbar={setHideNavbar} /> */}
             {/*Haylik ta7b takhdam biha bra7tak*/}
             {users &&
               (users.length > 0 ? (
                 users.map((user) => (
                   <div
-                    className="flex mt-4 gap-2 p-2 rounded-[10px]"
+                    className="flex mt-4 gap-2 p-2 rounded-[10px] w-full"
                     key={user.id}
                   >
-                    <div className="w-fit gap-[1rem] flex justify-between">
-                      <div className="flex items-center max-md:w-full">
-                        <img
-                          src={user.photo || "profilepi.jpg"}
-                          alt={user.Firstname}
-                          className="w-[8rem] h-[7rem] rounded-[10px] object-cover"
-                        />
-                      </div>
-                    </div>
-
                     <div className="flex-1 flex-col rounded-[10px] py-1 flex gap-[.5rem] max-md:px-3 ">
-                      <div className="flex gap-2">
-                        <h1 className="text-[1.25rem] font-[600]">
+                      <div className="flex gap-2 items-center">
+                        <div className="w-fit gap-[1rem] flex justify-between">
+                          <div className="flex items-center max-md:w-full">
+                            <img
+                              src={user.photo || "profilepi.jpg"}
+                              alt={user.Firstname}
+                              className="w-12 h-12 rounded-[10px] object-cover"
+                            />
+                          </div>
+                        </div>
+                        <div className="flex flex-col-reverse">
+                         <h1 className="text-[1.25rem] font-[600]">
                           Dr.{user.Firstname}
                         </h1>
                         <div className="flex items-center gap-1">
@@ -239,15 +240,22 @@ export default function SearchPage() {
                             fill="#181940"
                           ></Star>
                           <h1 className="text-[.75rem]">4.8</h1>
+                        </div> 
                         </div>
+                        
                       </div>
 
                       <div className="flex gap-2 items-center max-lg:w-full w-[100%]">
+                        <Clock size={15} />
                         <h1 className="text-[.75rem]">Next appt:</h1>
                         <div className="flex items-center justify-center gap-2">
-                          <Clock size={12} />
                           <h1 className="text-[.75rem]">26/02/2025</h1>
                         </div>
+                      </div>
+
+                      <div className="flex gap-2 items-center">
+                        <MapPin size={15}/>
+                        <h1>Cabinet Address</h1>
                       </div>
 
                       <div>
@@ -263,9 +271,9 @@ export default function SearchPage() {
                       {isMobile && (
                         <div
                           className={`fixed bottom-0 left-0 overflow-y-scroll w-full transition-all duration-200 ease flex justify-center border-t border-t-[#e4e4e4] bg-[#ffffff] rounded-t-[30px] 
-        ${showAppointmentModal ? "h-[80%] flex" : "h-0"}`}
-                        >
-                          <div className="w-full h-full flex flex-col items-center py-5 gap-[1rem]">
+                           ${showAppointmentModal ? "h-[80dvh] flex" : "h-0"}`}
+                          >
+                          <div className="w-full h-full flex flex-col items-center justify-between py-5 gap-[1rem]">
                             <div className="flex flex-col w-full h-fit items-center gap-1">
                               <img
                                 className="rounded-full h-24 w-24 object-cover bg-white"
@@ -302,7 +310,9 @@ export default function SearchPage() {
                             <div
                               className="absolute top-[5%] left-[5%] bg-[#eee] p-2 rounded-full cursor-pointer"
                               onClick={closeModal}
-                            ><ArrowLeft /></div>
+                            >
+                              <ArrowLeft />
+                            </div>
                           </div>
                         </div>
                       )}
