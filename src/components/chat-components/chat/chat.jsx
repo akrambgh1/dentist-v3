@@ -20,7 +20,7 @@ import { useUserStore } from "../../userStore";
 import { SendHorizontal  } from 'lucide-react';
 
 function Chat() {
-  const { chatId, updateBlockStatus, changeChat } = useChatStore();
+  const { chatId, changeChat } = useChatStore();
   const { userDetails } = useUserStore();
   const [messages, setMessages] = useState([]);
   const [messageText, setMessageText] = useState("");
@@ -28,7 +28,7 @@ function Chat() {
   const { isReceiverUserBlocked,isCurrentUserBlocked,changeBlock } = useChatStore();
  
   const [isTyping, setIsTyping] = useState(false);
-
+z
   const messageEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
