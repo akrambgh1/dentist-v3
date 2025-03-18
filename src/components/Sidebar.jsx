@@ -69,7 +69,7 @@ export default function Sidebar() {
       {/* Sidebar Toggle Button */}
       <div className="flex justify-between relative">Dentist</div>
       <div
-        className="p-[.25rem] rounded-[50%] flex items-center justify-center bg-[#e4e4e4] text-[#181940] cursor-pointer absolute top-[20px] right-[-20px]"
+        className="p-[.25rem] rounded-[50%] flex items-center justify-center bg-[#e4e4e4] text-[#18717b] cursor-pointer absolute top-[20px] right-[-20px]"
         onClick={toggleActive}
       >
         {isActive ? <ArrowLeft /> : <ArrowRight />}
@@ -85,16 +85,16 @@ export default function Sidebar() {
             return (
               <Link key={path || `menu-item-${index}`} to={path || "#"}>
                 <li
-                  className={`flex gap-[1.5rem] items-center p-2 cursor-pointer hover:text-[#181940] transition-colors w-full duration-200
+                  className={`flex gap-[1.5rem] items-center p-2 cursor-pointer hover:text-[#18717b] transition-colors w-full duration-200
                   ${
                     isActivePage
-                      ? "text-[#efefef] bg-[#181940] rounded-[10px] hover:text-white"
+                      ? "text-[#efefef] bg-[#18717b] rounded-[10px] hover:text-white"
                       : ""
                   }`}
                 >
-                  <Icon className={`w-[24px] h-[24px] flex-shrink-0 text-[#181940] ${
+                  <Icon className={`w-[24px] h-[24px] flex-shrink-0 text-[#18717b] ${
                     isActivePage
-                      ? "text-[#efefef] bg-[#181940] rounded-[10px] hover:text-white"
+                      ? "text-[#efefef] bg-[#18717b] rounded-[10px] hover:text-white"
                       : ""
                   }`} />
 
@@ -118,7 +118,7 @@ export default function Sidebar() {
               {/* <div className={`w-[2.5rem] h-[2.5rem] border-2  ${isActive && isTextVisible ?
               "bottom-0"
              : "bottom-[2.75rem]"}  
-             relative border-[#181940]  rounded-[50%] bg-[#181940]`}><img className="rounded-[50%]" src={userDetails?.photo|| "profilepi.jpg" } alt="" /></div>
+             relative border-[#18717b]  rounded-[50%] bg-[#18717b]`}><img className="rounded-[50%]" src={userDetails?.photo|| "profilepi.jpg" } alt="" /></div>
             <div>
             {isActive && isTextVisible && (
               <h1 className="transition-opacity duration-400 text-[#88898b] cursor-pointer text-[.85rem]">
@@ -137,7 +137,7 @@ export default function Sidebar() {
           {isActive && isTextVisible && (
               <button
               onClick={handLogout}
-              className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-[#181940] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+              className="relative cursor-pointer overflow-hidden rounded px-[2rem] py-2.5 text-white transition-all duration-200 bg-[#18717b] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
             >
               Logout
             </button>
@@ -150,12 +150,12 @@ export default function Sidebar() {
            
             {isActive && isTextVisible ?(
              
-             <button className="relative cursor-pointer overflow-hidden rounded  bg-[#181940] px-[1.5rem] py-2 text-white transition-all duration-200 hover:bg-[#4749b9] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
+             <button className="relative cursor-pointer overflow-hidden rounded  bg-[#18717b] px-[1.5rem] py-2 text-white transition-all duration-200 hover:bg-[#4749b9] hover:ring-offset-2 active:ring-2 active:ring-neutral-800"
              >
                Login
              </button>
               ) : (
-                <div className="w-[2.5rem] h-[2.5rem] p-2 hover:text-white duration-400 flex justify-center items-center rounded-[50%] hover:bg-[#181940] transition"><LogIn /></div>)}
+                <div className="w-[2.5rem] h-[2.5rem] p-2 hover:text-white duration-400 flex justify-center items-center rounded-[50%] hover:bg-[#18717b] transition"><LogIn /></div>)}
           { /* TODO: Add login button here when the user is not logged in */}
          </Link>
         </>) }

@@ -1,11 +1,9 @@
-import {
-  House,
-  UserRound,
-  Search,
-  MessageCircle,
-  Calendar,
-} from "lucide-react";
 
+import { RiHome6Line } from "react-icons/ri";
+import { BiSearchAlt } from "react-icons/bi";
+import { BsCalendar2 } from "react-icons/bs";
+import { TbBrandHipchat } from "react-icons/tb";
+import { HiOutlineUser } from "react-icons/hi";
 import { Link, useNavigate } from "react-router-dom";
 
 
@@ -34,32 +32,35 @@ export default function Nav() {
 
       {/* mobile navbar  */}
 
-      <section className="fixed bottom-0 left-0 bg-[#fff] w-full py-[1rem] transition-all duration-200 /* md:hidden */ flex justify-between items-center border-t-1 border-[#e8e8e8] px-[1rem] z-10">
+      <section className="fixed bottom-0 left-0 bg-[#fff] w-full py-[.75rem] transition-all duration-200 md:hidden flex justify-between items-center border-t-1 border-[#e8e8e8] px-[1rem] z-10">
         <Link to="/">
           <div className="flex flex-col gap-[.25rem] items-center justify-center">
-            <House stroke="#111238" size={21} />
+            <RiHome6Line stroke="#111238" size={20} />
             <h1 className="text-[#111238] font-[500]">Home</h1>
           </div>
         </Link>
       <Link to="/Search">
         <div className="flex flex-col gap-[.25rem]  items-center justify-center">
-          <Search stroke="#111238" size={21} />
+          <BiSearchAlt stroke="#111238" size={20} />
           <h1 className="text-[#111238] font-[500]">Search</h1>
         </div></Link>
 
+        <Link to="Appointments">
+
         <div className="flex flex-col gap-[.25rem]  items-center justify-center">
-          <Calendar stroke="#111238" size={21} />
+          <BsCalendar2 className="font-bold" type='solid' stroke="#111238" size={18} />
           <h1 className="text-[#111238] font-[500]">Appt</h1>
         </div>
+        </Link>
         <Link to="/Inbox">
         <div className="flex flex-col gap-[.25rem]  items-center justify-center">
-          <MessageCircle stroke="#111238" size={21} />
+          <TbBrandHipchat stroke="#111238" size={20} />
           <h1 className="text-[#111238] font-[500]">Chat</h1>
         </div>
         </Link>
         
           <div onClick={handleProNav} className="flex flex-col gap-[.25rem]  items-center justify-center">
-            <UserRound stroke="#111238" size={21} />
+            <HiOutlineUser type="solid" className="!font-bold" stroke="#111238" size={20} />
             <h1 className="text-[#111238] font-[500]">Profile</h1>
           </div>
         

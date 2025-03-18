@@ -1,3 +1,4 @@
+
 // eslint-disable-next-line no-unused-vars
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -10,6 +11,7 @@ import SearchPage from "./pages/SearchPage";
 import RegisterForm from "./pages/Regestration";
 import Inbox from "./pages/inbox-phage";
 import DentistProfile from "./pages/Dentist-profile";
+import Appointments from "./pages/Appointments";
 
 
 function App() {
@@ -26,6 +28,7 @@ function App() {
           <Route path="/Profile" element={<Profile />} />
           <Route path="/RegisterForm" element={<RegisterForm />} />
           <Route path="/inbox" element={<Inbox />} />
+          <Route path="/Appointments" element={<Appointments />} />
           <Route path="/dentist/:dentistId" element={<DentistProfile />} />
         </Routes>
         <ToastContainer />

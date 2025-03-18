@@ -1,3 +1,4 @@
+/* eslint-disable react/no-unescaped-entities */
 import Sidebar from "../components/Sidebar";
 
 import Nav from "../components/navbar";
@@ -10,7 +11,7 @@ import {
   doc,
   getDoc,
   setDoc,
-  serverTimestamp,
+  serverTimestamp
 } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 import { useChatStore } from "../components/userChatStore";
@@ -65,7 +66,7 @@ export default function DentistProfile() {
         await setDoc(chatDocRef, {
           createdAt: serverTimestamp(),
           messages: [],
-          users: [userDetails.id, dentist.id],
+          users: [userDetails.id, dentist.id]
         });
 
         const userChatSenderRef = doc(userChatRef, userDetails.id);
@@ -80,9 +81,9 @@ export default function DentistProfile() {
                 receiverId: dentist.id,
                 updatedAt: serverTimestamp(),
                 isTyping: false,
-                isNewMessage: false,
-              },
-            },
+                isNewMessage: false
+              }
+            }
           },
           { merge: true }
         );
@@ -96,9 +97,9 @@ export default function DentistProfile() {
                 receiverId: userDetails.id,
                 updatedAt: serverTimestamp(),
                 isTyping: false,
-                isNewMessage: false,
-              },
-            },
+                isNewMessage: false
+              }
+            }
           },
           { merge: true }
         );
@@ -117,11 +118,10 @@ export default function DentistProfile() {
       <Nav></Nav>
       <section className="flex max-md:mb-[7rem]">
         <Sidebar></Sidebar>
-
         <section className="h-[100vh] flex-1 overflow-y-scroll p-8 max-md:p-0 max-md:h-auto">
           <section className="w-full h-full rounded-[20px] max-md:rounded-none flex flex-col gap-[2rem]">
             <div className="h-auto w-full rounded-[20px] border-[1px] border-[#eff2f1] flex flex-col justify-between gap-[2rem] max-md:gap-2 pb-[1rem] max-md:border-0 max-md:border-b-[1px]">
-              <div className="h-[30vh] bg-[url('public/bg.jpg')] bg-center bg-cover rounded-t-[20px] max-md:rounded-none relative">
+              <div className="h-[30vh] bg-[url('/bg2.jpg')] bg-center bg-cover rounded-t-[20px] max-md:rounded-none relative">
                 <img
                   className="rounded-full h-28 w-28 object-cover absolute bottom-[-15%] left-[3%] max-md:left-1/2 max-md:top-1/2 max-md:-translate-y-1/2 max-md:transform max-md:-translate-x-1/2  bg-white"
                   src={dentist?.photo || "/profilepi.jpg"}
@@ -140,37 +140,52 @@ export default function DentistProfile() {
                     Algeria / Algiers
                   </h1>
 
-                  <button onClick={() => handleAddingUser()} className="relative w-fit mt-[1rem] overflow-hidden rounded bg-[#181940] px-[4rem] max-md:px-0 max-md:w-full py-2.5 text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2">
-                    <span className="relative">Chat</span>
-                  </button>
-                  <button  className="relative w-fit mt-[1rem] overflow-hidden rounded bg-[#181940] px-[4rem] max-md:px-0 max-md:w-full py-2.5 text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2">
-                    <span className="relative"> Make an appointment </span>
-                  </button>
+                  <div className="flex gap-2 max-md:w-full max-md:flex-col max-md:gap-1">
+                    <button
+                      onClick={() => handleAddingUser()}
+                      className="relative w-fit mt-[1rem] overflow-hidden rounded bg-[#18717b] px-[4rem] max-md:px-0 max-md:w-full py-2.5 text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2"
+                    >
+                      <span className="relative">Chat</span>
+                    </button>
+                    <button className="relative w-fit mt-[1rem] overflow-hidden rounded bg-[#18717b] px-[4rem] max-md:px-0 max-md:w-full py-2.5 text-white transition-all duration-300 cursor-pointer hover:ring-2 hover:ring-neutral-800 hover:ring-offset-2">
+                      <span className="relative"> Make an appointment </span>
+                    </button>
+                  </div>
                 </div>
               </div>
             </div>
 
+            <div className="w-full flex flex-col gap-4 p-4">
+              <h1 className="font-[500] text-2xl">About the doctor</h1>
+              <p>
+                Lorem ipsum dolor sit, amet consectetur adipisicing elit.
+                Inventore sapiente similique consectetur, illo quibusdam saepe
+                harum eaque. Explicabo dolorem, deleniti accusamus eum facilis
+                repudiandae officiis odit obcaecati laborum nihil. Perspiciatis!
+              </p>
+            </div>
+
             <div className="flex flex-col border-[1px] border-[#eff2f1] p-4 rounded-[15px] gap-[1rem] px-8 max-md:px-4">
-              <h1 className="text-[1.5rem] font-[500]">Personal information</h1>
+              <h1 className="text-[1.5rem] font-[500]">Doctor's information</h1>
 
               <div className="grid grid-cols-2 gap-[2rem] gap-x-[6rem] max-md:flex max-md:flex-col">
                 <div className="flex flex-col">
-                  <h1 className="text-[#7994a4]">First Name</h1>
+                  <h1 className="text-gray-600">First Name</h1>
                   <h1 className="">{dentist?.Firstname || "N/A"}</h1>
                 </div>
 
                 <div className="flex flex-col">
-                  <h1 className="text-[#7994a4]">Last Name</h1>
+                  <h1 className="text-gray-600">Last Name</h1>
                   <h1 className="">{dentist?.Lastname || "N/A"}</h1>
                 </div>
 
                 <div className="flex flex-col overflow-hidden">
-                  <h1 className="text-[#7994a4]">E-mail address</h1>
+                  <h1 className="text-gray-600">E-mail address</h1>
                   <h1 className="">{dentist?.email || "N/A"}</h1>
                 </div>
 
                 <div className="flex flex-col">
-                  <h1 className="text-[#7994a4]">Phone Number</h1>
+                  <h1 className="text-gray-600">Phone Number</h1>
                   <h1 className="">{dentist?.phone || "N/A"}</h1>
                 </div>
               </div>

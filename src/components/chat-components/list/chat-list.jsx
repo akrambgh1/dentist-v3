@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { db } from "../../firebase";
 import { doc, onSnapshot, getDoc } from "firebase/firestore";
@@ -9,12 +10,13 @@ import { useChatStore } from "../../userChatStore";
 const ChatList = () => {
   const [chats, setChats] = useState([]);
   const { userDetails } = useUserStore();
-  const { chatId, changeChat,isCurrentUserBlocked } = useChatStore();
+  const { chatId, changeChat } = useChatStore();
   const [timestamps, setTimestamps] = useState({});
 
   useEffect(() => {
     if (!userDetails?.id) {
       console.warn("⚠ User not logged in, skipping chat fetch.");
+
       return;
     }
 

@@ -1,4 +1,4 @@
-// eslint-disable-next-line no-unused-vars
+
 import ChatList from "./chat-list";
 import UserInfo from "./userInfo";
 import { Search } from "lucide-react";

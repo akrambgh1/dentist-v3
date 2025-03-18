@@ -68,28 +68,28 @@ export default function Profile() {
 
                           <div className="grid grid-cols-2 gap-[2rem] gap-x-[6rem] max-md:flex max-md:flex-col">
                             <div className="flex flex-col">
-                              <h1 className="text-[#7994a4]">First Name</h1>
+                              <h1 className="text-gray-600">First Name</h1>
                               <h1 className="">
                                 {userDetails?.Firstname || "N/A"}
                               </h1>
                             </div>
 
                             <div className="flex flex-col">
-                              <h1 className="text-[#7994a4]">Last Name</h1>
+                              <h1 className="text-gray-600">Last Name</h1>
                               <h1 className="">
                                 {userDetails?.Lastname || "N/A"}
                               </h1>
                             </div>
 
                             <div className="flex flex-col overflow-hidden">
-                              <h1 className="text-[#7994a4]">E-mail address</h1>
+                              <h1 className="text-gray-600">E-mail address</h1>
                               <h1 className="">
                                 {userDetails?.email || "N/A"}
                               </h1>
                             </div>
 
                             <div className="flex flex-col">
-                              <h1 className="text-[#7994a4]">Phone Number</h1>
+                              <h1 className="text-gray-600">Phone Number</h1>
                               <h1 className="">
                                 {userDetails?.phone || "N/A"}
                               </h1>
@@ -100,17 +100,17 @@ export default function Profile() {
                         <div className="flex flex-col border-[1px] border-[#eff2f1] p-4 rounded-[15px] gap-[1rem] px-8 max-md:px-4">
                           <div className="grid grid-cols-2 gap-[2rem] gap-x-[6rem] max-md:flex max-md:flex-col">
                             <div className="flex flex-col">
-                              <h1 className="text-[#7994a4]">Country</h1>
+                              <h1 className="text-gray-600">Country</h1>
                               <h1 className="">Algeria</h1>
                             </div>
 
                             <div className="flex flex-col">
-                              <h1 className="text-[#7994a4]">City / State</h1>
+                              <h1 className="text-gray-600">City / State</h1>
                               <h1 className="">Algeria</h1>
                             </div>
 
                             <div className="flex flex-col">
-                              <h1 className="text-[#7994a4]">Postal code</h1>
+                              <h1 className="text-gray-600">Postal code</h1>
                               <h1 className="">16000</h1>
                             </div>
                           </div>

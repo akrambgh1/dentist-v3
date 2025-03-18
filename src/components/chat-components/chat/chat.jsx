@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/no-unescaped-entities */
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
@@ -28,7 +29,7 @@ function Chat() {
   const { isReceiverUserBlocked,isCurrentUserBlocked,changeBlock } = useChatStore();
  
   const [isTyping, setIsTyping] = useState(false);
-z
+
   const messageEndRef = useRef(null);
   const chatContainerRef = useRef(null);
 
@@ -285,10 +286,10 @@ z
         </div>
 
        
-          <div onClick={blockUser} className="bg-[#181940] p-2 flex items-center justify-center rounded-lg cursor-pointer">
-            {isReceiverUserBlocked ? (<LockKeyholeOpen className="text-white">
+          <div onClick={blockUser} className="p-2 flex items-center justify-center rounded-lg cursor-pointer">
+            {isReceiverUserBlocked ? (<LockKeyholeOpen className="text-black">
               
-            </LockKeyholeOpen>):(<LockKeyhole className="text-white " >
+            </LockKeyholeOpen>):(<LockKeyhole className="text-black " >
             
               </LockKeyhole>)}
             
@@ -337,7 +338,7 @@ z
               >
                 <div
                   className={`px-5 py-2 m-2 rounded-2xl max-w-xs break-words whitespace-pre-wrap ${
-                    isMe ? "bg-[#181940] text-white" : "bg-gray-200 text-black"
+                    isMe ? "bg-[#005bd1] text-white" : "bg-gray-200 text-black"
                   }`}
                 >
                   {msg.text}
@@ -375,7 +376,7 @@ z
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         />
         <button
-          className="ml-2 px-8 max-md:px-2 p-2 bg-[#181940] text-white rounded-lg"
+          className="ml-2 px-8 max-md:px-2 p-2 bg-[#005bd1] text-white rounded-lg"
           onClick={sendMessage}
           disabled={isCurrentUserBlocked || isReceiverUserBlocked}
         >
